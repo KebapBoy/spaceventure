@@ -1,0 +1,19 @@
+{
+    "name": "spaceventure",
+    "version": "0.0.1",
+    "description": "A small arcade-style skill game were the player has to navigate a spaceship through different levels and obstacles.",
+    "main": "src/index.js",
+    "repository": "https://github.com/KebapBoy/spaceventure.git",
+    "author": "Markus Leister <m.leister@topmotive.eu>",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "debug": "browser-sync start -c bs-config.js"
+    },
+    "dependencies": {
+        "p5": "^0.7.2"
+    },
+    "devDependencies": {
+        "browser-sync": "^2.26.3"
+    }
+}
