@@ -1,6 +1,15 @@
 # spaceventure
 A small arcade-style skill game were the player has to navigate a spaceship through different levels and obstacles.
 
+## How to play?
+
+To play the game simply open the _src/index.html_ file.
+
+## How to develop?
+
+For easier development install all dependencies by running `yarn install` in your command prompt.
+Then `yarn debug` to start browser-sync.
+
 ## License
 
 MIT License

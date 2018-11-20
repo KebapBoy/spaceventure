@@ -10,9 +10,7 @@
     "scripts": {
         "debug": "browser-sync start -c bs-config.js"
     },
-    "dependencies": {
-        "p5": "^0.7.2"
-    },
+    "dependencies": {},
     "devDependencies": {
         "browser-sync": "^2.26.3"
     }
