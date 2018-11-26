@@ -1,13 +1,17 @@
 let player
+let ground
 
 function setup() {
     createCanvas(500, 500)
 
     angleMode(DEGREES)
 
-    player = new Spaceship(width / 2, 0, 10, 20)
+    player = new Spaceship(width / 2, 0, 30, 40)
     player.friction = 0.02
-    player.flexibility = 0.25
+    player.flexibility = 0.5
+
+    ground = new Sprite(width / 2, height - 5, width, 10)
+    ground.color = color(255, 0, 0)
 
     // prevent contextmenu on mouse right click
     document.getElementsByTagName("canvas")[0].addEventListener("contextmenu", e => e.preventDefault())
@@ -16,31 +20,17 @@ function setup() {
 function draw() {
     background(0)
 
-    player.update()
+    push()
+
+    translate(-player.position.x + width / 2, -player.position.y + height / 2)
+
+    ground.update()
+    ground.show()
+
+    player.update(ground)
     player.show()
 
-    // ground
-    noStroke()
-    fill(255, 0, 0)
-    rect(0, height - 10, width, 10)
-
-    // detect ground hit
-    if (player.position.y + (player.height / 2) >= height - 10) {
-        player.position.y = height - 10 - (player.height / 2)
-        player.velocity.y *= -player.flexibility
-    }
-    else {
-        // gravity
-        player.addForce(0.15, 90)
-    }
-
-    // endless left and right
-    if (player.position.x > width) {
-        player.position.x = 0
-    }
-    else if (player.position.x < 0) {
-        player.position.x = width
-    }
+    pop()
 
     if (DEBUG) {
         this.drawDebugInfo()
