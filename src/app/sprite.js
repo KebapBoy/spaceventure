@@ -1,73 +1,3 @@
-class BoundingBox {
-    constructor(x, y, w, h) {
-        this.position = createVector(x, y)
-
-        this.width = w
-        this.height = h
-    }
-
-    intersects(other) {
-        let w = 0.5 * (this.width + other.width)
-        let h = 0.5 * (this.height + other.height)
-        let dx = this.position.x - other.position.x
-        let dy = this.position.y - other.position.y
-
-        let collision = false
-        let side
-
-        if (abs(dx) <= w && abs(dy) <= h) {
-            // collision
-            collision = true
-
-            let wy = w * dy
-            let hx = h * dx
-
-            if (wy > hx) {
-                if (wy > -hx) {
-                    // collision at the top
-                    side = "top"
-                }
-                else {
-                    // collision on the right
-                    side = "right"
-                }
-            }
-            else {
-                if (wy > -hx) {
-                    // collision on the left
-                    side = "left"
-                }
-                else {
-                    // collision at the bottom
-                    side = "bottom"
-                }
-            }
-        }
-
-        return [collision, side]
-    }
-
-    update() {
-
-    }
-
-    show() {
-        if (DEBUG) {
-            push()
-
-            // center point
-            stroke(255, 0, 0)
-            strokeWeight(1)
-            noFill()
-            translate(this.position.x, this.position.y)
-            rectMode(CENTER)
-            rect(0, 0, this.width, this.height)
-
-            pop()
-        }
-    }
-}
-
 class Sprite extends BoundingBox {
     constructor(x, y, w, h) {
         super(x, y, w, h)
@@ -91,8 +21,6 @@ class Sprite extends BoundingBox {
 
         this.position.x += this.velocity.x
         this.position.y += this.velocity.y
-
-        super.update()
     }
 
     show() {
