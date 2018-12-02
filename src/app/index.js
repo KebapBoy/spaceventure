@@ -237,7 +237,7 @@ function finishLevel() {
     // resume game after 5 seconds
     setTimeout(() => {
         resetLevel()
-    }, 5000)
+    }, 3000)
 }
 
 function drawDebugInfo() {
