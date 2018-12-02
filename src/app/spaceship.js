@@ -16,11 +16,11 @@ class Spaceship extends Sprite {
         }
         // left thrust, left motion slightly upwards
         else if (this.leftThrust) {
-            this.addForce(0.2, -120)
+            this.addForce(0.15, -140)
         }
         // right thrust, right motion slightly upwards
         else if (this.rightThrust) {
-            this.addForce(0.2, -60)
+            this.addForce(0.15, -40)
         }
         // hovering
         else {

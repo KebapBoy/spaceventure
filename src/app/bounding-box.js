@@ -4,6 +4,8 @@ class BoundingBox {
 
         this.width = w
         this.height = h
+
+        this.collisionEnabled = true
     }
 
     getPosition(side) {
@@ -20,6 +22,9 @@ class BoundingBox {
     }
 
     detectCollison(other) {
+        // collision is disabled
+        if (!this.collisionEnabled) return
+
         let width = (this.width + other.width) / 2
         let height = (this.height + other.height) / 2
         let deltaX = this.position.x - other.position.x
@@ -39,15 +44,12 @@ class BoundingBox {
     }
 
     show() {
-        if (DEBUG) {
+        if (this.collisionEnabled && DEBUG) {
             push()
 
-            // center point
-            stroke(255, 0, 0)
-            strokeWeight(1)
+            // draw bounding box
             noFill()
-            translate(this.position.x, this.position.y)
-            rectMode(CENTER)
+            stroke(255, 0, 0)
             rect(0, 0, this.width, this.height)
 
             pop()
