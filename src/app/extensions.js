@@ -1,3 +1,5 @@
+// Ported from Processing. Thanks to J David Eisenberg (https://www.openprocessing.org/sketch/7013/).
+
 /*
  * Draw a dashed line with given dash and gap length.
  * x0 starting x-coordinate of line.

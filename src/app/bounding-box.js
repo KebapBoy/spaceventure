@@ -25,6 +25,11 @@ class BoundingBox {
         // collision is disabled
         if (!this.collisionEnabled) return
 
+        /*
+         * Collision detection based on the Minkowski addition (https://en.wikipedia.org/wiki/Minkowski_addition).
+         * Thanks to markE (https://stackoverflow.com/a/29861691).
+         */
+
         let width = (this.width + other.width) / 2
         let height = (this.height + other.height) / 2
         let deltaX = this.position.x - other.position.x
