@@ -5,6 +5,8 @@ A small arcade-style skill game were the player has to navigate a spaceship thro
 
 To play the game simply open the _src/index.html_ file.
 
+**Best browser zoom to player is currently 250%.**
+
 Activate switches to disabled lasers and reach the finish (white framed area).
 
 ### Controls
@@ -14,6 +16,7 @@ Activate switches to disabled lasers and reach the finish (white framed area).
 | Move right (left thrust) | M     |
 | Move left (right thrust) | C     |
 | Move up (both thrusts)   | C + M |
+
 
 ## How to develop?
 
