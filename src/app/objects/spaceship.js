@@ -14,17 +14,20 @@ class Spaceship extends Sprite {
         if (this.leftThrust && this.rightThrust) {
             this.addForce(0.3, -90)
         }
-        // left thrust, left motion slightly upwards
+        // left thrust, left motion slightly downwards
         else if (this.leftThrust) {
             this.addForce(0.15, -140)
         }
-        // right thrust, right motion slightly upwards
+        // right thrust, right motion slightly downwards
         else if (this.rightThrust) {
             this.addForce(0.15, -40)
         }
         // hovering
         else {
-            if (abs(this.velocity.x) <= 0.3) {
+            // if the velocity (x or y) is really small set it to zero
+            // to prevent the spaceship stop from moving very slowly forever
+
+            if (abs(this.velocity.x) < 0.3) {
                 this.velocity.x = 0
             }
 
