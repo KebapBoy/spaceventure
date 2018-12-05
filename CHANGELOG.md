@@ -1,3 +1,6 @@
+# Spaceventure 0.5.2 (Nov 05, 2018)
+* Added initial player position for each level
+
 # Spaceventure 0.5.1 (Nov 05, 2018)
 * Added control to restart level
 * The dimensions of the test level are now independent of the screen size

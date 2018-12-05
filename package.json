@@ -1,6 +1,6 @@
 {
     "name": "spaceventure",
-    "version": "0.5.1",
+    "version": "0.5.2",
     "description": "A small arcade-style skill game were the player has to navigate a spaceship through different levels and obstacles.",
     "main": "src/index.js",
     "repository": "https://github.com/KebapBoy/spaceventure.git",

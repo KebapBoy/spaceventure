@@ -14,7 +14,7 @@ function setup() {
 
     currentLevel = initializeLevel()
 
-    player = new Spaceship(width / 2, height / 2, 30, 40)
+    player = new Spaceship(currentLevel.start.x, currentLevel.start.y, 30, 40)
     player.friction = 0.01
     player.flexibility = 0.5
 
@@ -49,7 +49,7 @@ function initializeLevel() {
  * The players position, all switches and all lasers will be resetted.
  */
 function resetLevel() {
-    player.position = createVector(width / 2, height / 2)
+    player.position = currentLevel.start.copy()
     player.velocity = createVector(0, 0)
 
     for (let _switch of currentLevel.switches) {

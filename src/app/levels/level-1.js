@@ -42,6 +42,7 @@ function getLevel1() {
     switch1.connectLaser(laser1)
     switches.push(switch1)
 
+    let start = createVector(1020, 455)
     let finish = new Finish(1315, 175)
 
     return {
@@ -49,6 +50,7 @@ function getLevel1() {
         objects,
         switches,
         lasers,
-        finish
+        start,
+        finish,
     }
 }
