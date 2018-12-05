@@ -7,18 +7,8 @@ class Spaceship extends Sprite {
     }
 
     update() {
-        this.leftThrust = keyIsDown(CONTROLS.LEFT_THRUST.KEY)
-        this.rightThrust = keyIsDown(CONTROLS.RIGHT_THRUST.KEY)
-
-        if (touches.length) {
-            if (!this.leftThrust) {
-                this.leftThrust = touches.some(touch => touch.x < width / 2)
-            }
-
-            if (!this.rightThrust) {
-                this.rightThrust = touches.some(touch => touch.x > width / 2)
-            }
-        }
+        this.leftThrust = checkControl("leftThrust")
+        this.rightThrust = checkControl("rightThrust")
 
         // both thrusts, upwards motion
         if (this.leftThrust && this.rightThrust) {
