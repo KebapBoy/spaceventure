@@ -4,45 +4,45 @@ function getLevel1() {
     let lasers = []
     let switches = []
 
-    let ceiling = new Platform(width / 2, 5, width - 20, 10)
+    let ceiling = new Platform(750, 5, 1500, 10)
     ceiling.color = color(255, 0, 0)
     objects.push(ceiling)
 
-    let floor = new Platform(width / 2, height - 5, width - 20, 10)
+    let floor = new Platform(750, 995, 1500, 10)
     floor.color = color(255, 0, 0)
     objects.push(floor)
 
-    let wallLeft = new Platform(5, height / 2, 10, height)
+    let wallLeft = new Platform(5, 500, 10, 980)
     wallLeft.color = color(255, 0, 0)
     objects.push(wallLeft)
 
-    let wallRight = new Platform(width - 5, height / 2, 10, height)
+    let wallRight = new Platform(1495, 500, 10, 980)
     wallRight.color = color(255, 0, 0)
     objects.push(wallRight)
 
-    let platform = new Platform(width / 2 - 5, height / 2 + height / 4 - 5, width / 2, 10)
+    let platform = new Platform(745, 705, 750, 10)
     platform.landable = true
     platform.color = color(0, 255, 0)
     objects.push(platform)
 
-    let platformRight = new Platform(width / 2 + width / 4, height / 2 - height / 8 + 5, 10, height - height / 4 - 10)
+    let platformRight = new Platform(1125, 360, 10, 700)
     platformRight.landable = true
     platformRight.color = color(0, 255, 0)
     objects.push(platformRight)
 
-    let platformTop = new Platform(width / 2 + width / 4 - width / 16 - 5, height / 2 - height / 8, width / 8, 10)
+    let platformTop = new Platform(1020, 375, 200, 10)
     platformTop.landable = true
     platformTop.color = color(0, 255, 0)
     objects.push(platformTop)
 
-    let laser1 = new Laser(width / 4 + 10, height / 2 - height / 8, height / 2 + height / 4 - 20)
+    let laser1 = new Laser(385, 355, 690)
     lasers.push(laser1)
 
-    let switch1 = new Switch(width / 2 + width / 4 - width / 16 - 5, height / 2 - height / 8 - 20, 20, 30)
+    let switch1 = new Switch(1020, 355, 20, 30)
     switch1.connectLaser(laser1)
     switches.push(switch1)
 
-    let finish = new Finish(width - 65, 65)
+    let finish = new Finish(1315, 175)
 
     return {
         id,

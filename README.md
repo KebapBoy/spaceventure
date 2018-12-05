@@ -1,27 +1,30 @@
 # spaceventure
 A small arcade-style skill game were the player has to navigate a spaceship through different levels and obstacles.
 
+
 ## How to play?
 
 To play the game simply open the _src/index.html_ file.
 
-**Best browser zoom to player is currently 250%.**
+**Browser zoom should be disabled, set to 100%.**
 
 Activate switches to disabled lasers and reach the finish (white framed area).
 
 ### Controls
 
-| Action                   | Key   |
-|--------------------------|-------|
-| Move right (left thrust) | M     |
-| Move left (right thrust) | C     |
-| Move up (both thrusts)   | C + M |
+| Action                   | Key   | Touch        |
+|--------------------------|-------|--------------|
+| Move right (left thrust) | M     | Left screen  |
+| Move left (right thrust) | C     | Right screen |
+| Move up (both thrusts)   | C + M | Both sides   |
+| Restart level            | R     | -            |
 
 
 ## How to develop?
 
 For easier development install all dependencies by running `yarn install` in your command prompt.
 Then `yarn debug` to start browser-sync.
+
 
 ## License
 
