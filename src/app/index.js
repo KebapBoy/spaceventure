@@ -1,6 +1,10 @@
 let currentLevel = undefined
 let player
 
+/**
+ * Called by p5 at game start.
+ * Initialize the game.
+ */
 function setup() {
     // the canvas should fill the browser viewport
     createCanvas(windowWidth, windowHeight)
@@ -59,7 +63,6 @@ function resetLevel() {
     currentLevel.finished = false
 }
 
-
 /**
  * Finishes the current level and show an endscreen for a few seconds
  * before loading the next level.
@@ -70,7 +73,7 @@ function finishLevel() {
     push()
 
     // curtain
-    fill(0, 0, 0, 100)
+    fill(0, 0, 0, 150)
     rectMode(CORNER)
     rect(0, 0, width, height)
 
@@ -90,12 +93,19 @@ function finishLevel() {
     }, 3000)
 }
 
+/**
+ * Called by p5 every frame.
+ * The game loop.
+ */
 function draw() {
-    if (!currentLevel.finished) {
-        update()
+    if (currentLevel.finished) {
+        // wait for level end screen to finish
+        return
     }
 
-    if (!currentLevel.finished) {
+    const redrawCanvas = update()
+
+    if (redrawCanvas) {
         show()
 
         if (DEBUG) {
@@ -104,11 +114,22 @@ function draw() {
     }
 }
 
+/**
+ * Does all the needed update logic each frame.
+ *
+ * * Checks if the user wants to restart the level
+ * * Updated the players position
+ * * Handles collision detection
+ * * Checks if the finish is reached
+ *
+ * Returns a boolean which indicated if the canvas should be redrawn or not
+ */
 function update() {
 
     // reset level if user presses the key R
     if (keyIsDown(KEYS.R)) {
         resetLevel()
+        return
     }
 
     player.update()
@@ -118,46 +139,47 @@ function update() {
     for (let object of currentLevel.objects) {
         const collisionSide = object.detectCollison(player)
 
-        // no collision happened
-        if (!collisionSide) continue
-
-        if (object.landable) {
-
-            // bounce of landable object
-            if (collisionSide == "bottom" || collisionSide == "top") {
-                if (collisionSide == "bottom") {
-                    // bounce of from objects top side -> landed on object
-                    landed = true
-                    let objectPosition = object.getPosition("top")
-                    player.position.y = objectPosition.y - (player.height / 2)
-                }
-                else {
-                    // bounce of from objects bottom side
-                    let objectPosition = object.getPosition("bottom")
-                    player.position.y = objectPosition.y + (player.height / 2)
-                }
-
-                player.velocity.y *= -player.flexibility
-                player.velocity.x *= player.flexibility
-            }
-            else {
-                if (collisionSide == "left") {
-                    // bounce of from objects right side
-                    let objectPosition = object.getPosition("right")
-                    player.position.x = objectPosition.x + (player.width / 2)
-                }
-                else {
-                    // bounce of from objects left side
-                    let objectPosition = object.getPosition("left")
-                    player.position.x = objectPosition.x - (player.width / 2)
-                }
-
-                player.velocity.x *= -player.flexibility
-            }
+        if (!collisionSide) {
+            // no collision happened
+            continue
         }
-        else {
+
+        if (!object.landable) {
             // hit a not landable object
             resetLevel()
+            return
+        }
+
+        // bounce of landable object
+        if (collisionSide == "bottom" || collisionSide == "top") {
+            if (collisionSide == "bottom") {
+                // bounce of from objects top side -> landed on object
+                landed = true
+                let objectPosition = object.getPosition("top")
+                player.position.y = objectPosition.y - (player.height / 2)
+            }
+            else {
+                // bounce of from objects bottom side
+                let objectPosition = object.getPosition("bottom")
+                player.position.y = objectPosition.y + (player.height / 2)
+            }
+
+            player.velocity.y *= -player.flexibility
+            player.velocity.x *= player.flexibility
+        }
+        else {
+            if (collisionSide == "left") {
+                // bounce of from objects right side
+                let objectPosition = object.getPosition("right")
+                player.position.x = objectPosition.x + (player.width / 2)
+            }
+            else {
+                // bounce of from objects left side
+                let objectPosition = object.getPosition("left")
+                player.position.x = objectPosition.x - (player.width / 2)
+            }
+
+            player.velocity.x *= -player.flexibility
         }
     }
 
@@ -175,21 +197,30 @@ function update() {
         if (collided) {
             // hit a laser
             resetLevel()
+            return
         }
     }
 
-    const finishReached = currentLevel.finish.detectCollison(player)
-    if (finishReached) {
-        finishLevel()
-    }
-
-    // add gravity
     if (!landed) {
+        // add gravity
         player.addForce(0.15, 90)
     }
+
+    const finishReached = currentLevel.finish.detectCollison(player)
+
+    if (finishReached) {
+        finishLevel()
+        return
+    }
+
+    return true
 }
 
+/**
+ * Redraws the canvas with the updated data each frame.
+ */
 function show() {
+    // clear old frame
     background(0)
 
     push()
@@ -211,6 +242,7 @@ function show() {
 
     currentLevel.finish.show()
 
+    // the player should overlap all other objects
     player.show()
 
     pop()
