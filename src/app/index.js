@@ -105,6 +105,12 @@ function draw() {
 }
 
 function update() {
+
+    // reset level if user presses the key R
+    if (keyIsDown(KEYS.R)) {
+        resetLevel()
+    }
+
     player.update()
 
     let landed = false
