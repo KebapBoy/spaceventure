@@ -1,23 +1,18 @@
+let currentLevel = undefined
 let player
-let level = {
-    objects: [],
-    lasers: [],
-    switches: [],
-    finish: undefined,
-}
-
-let levelFinished = false
 
 function setup() {
+    // the canvas should fill the browser viewport
     createCanvas(windowWidth, windowHeight)
 
+    // always work with degree angles
     angleMode(DEGREES)
+
+    currentLevel = initializeLevel()
 
     player = new Spaceship(width / 2, height / 2, 30, 40)
     player.friction = 0.01
     player.flexibility = 0.5
-
-    level = initializeLevel()
 
     // prevent contextmenu on mouse right click
     document.getElementsByTagName("canvas")[0].addEventListener("contextmenu", e => e.preventDefault())
@@ -26,65 +21,81 @@ function setup() {
     window.addEventListener("resize", () => resizeCanvas(windowWidth, windowHeight))
 }
 
+/**
+ * Initialized the current level.
+ *
+ * Either the first level on game start or the next level on level finish.
+ */
 function initializeLevel() {
-    let objects = []
-    let lasers = []
-    let switches = []
+    let currentLevelId
 
-    let ceiling = new Platform(width / 2, 5, width - 20, 10)
-    ceiling.color = color(255, 0, 0)
-    objects.push(ceiling)
-
-    let floor = new Platform(width / 2, height - 5, width - 20, 10)
-    floor.color = color(255, 0, 0)
-    objects.push(floor)
-
-    let wallLeft = new Platform(5, height / 2, 10, height)
-    wallLeft.color = color(255, 0, 0)
-    objects.push(wallLeft)
-
-    let wallRight = new Platform(width - 5, height / 2, 10, height)
-    wallRight.color = color(255, 0, 0)
-    objects.push(wallRight)
-
-    let platform = new Platform(width / 2 - 5, height / 2 + height / 4 - 5, width / 2, 10)
-    platform.landable = true
-    platform.color = color(0, 255, 0)
-    objects.push(platform)
-
-    let platformRight = new Platform(width / 2 + width / 4, height / 2 - height / 8 + 5, 10, height - height / 4 - 10)
-    platformRight.landable = true
-    platformRight.color = color(0, 255, 0)
-    objects.push(platformRight)
-
-    let platformTop = new Platform(width / 2 + width / 4 - width / 16 - 5, height / 2 - height / 8, width / 8, 10)
-    platformTop.landable = true
-    platformTop.color = color(0, 255, 0)
-    objects.push(platformTop)
-
-    let laser1 = new Laser(width / 4 + 10, height / 2 - height / 8, height / 2 + height / 4 - 20)
-    lasers.push(laser1)
-
-    let switch1 = new Switch(width / 2 + width / 4 - width / 16 - 5, height / 2 - height / 8 - 20, 20, 30)
-    switch1.connectLaser(laser1)
-    switches.push(switch1)
-
-    let finish = new Finish(width - 65, 65)
-
-    return {
-        objects,
-        switches,
-        lasers,
-        finish
+    if (!currentLevel) {
+        currentLevelId = 1
     }
+    else {
+        currentLevelId = currentLevel.id + 1
+    }
+
+    return window[`getLevel${currentLevelId}`]()
+}
+
+/**
+ * Resets the current level to the initial state.
+ *
+ * The players position, all switches and all lasers will be resetted.
+ */
+function resetLevel() {
+    player.position = createVector(width / 2, height / 2)
+    player.velocity = createVector(0, 0)
+
+    for (let _switch of currentLevel.switches) {
+        _switch.deactivate()
+    }
+
+    for (let laser of currentLevel.lasers) {
+        laser.activate()
+    }
+
+    currentLevel.finished = false
+}
+
+
+/**
+ * Finishes the current level and show an endscreen for a few seconds
+ * before loading the next level.
+ */
+function finishLevel() {
+    currentLevel.finished = true
+
+    push()
+
+    // curtain
+    fill(0, 0, 0, 100)
+    rectMode(CORNER)
+    rect(0, 0, width, height)
+
+    // text
+    noStroke()
+    fill(255)
+    textSize(32)
+    textAlign(CENTER)
+    textStyle(BOLD)
+    text("LEVEL FINISHED", width / 2, height / 2)
+
+    pop()
+
+    // resume game after 3 seconds
+    setTimeout(() => {
+        resetLevel()
+    }, 3000)
 }
 
 function draw() {
-    if (!this.levelFinished) {
+    if (!currentLevel.finished) {
         update()
     }
 
-    if (!this.levelFinished) {
+    if (!currentLevel.finished) {
         show()
 
         if (DEBUG) {
@@ -98,7 +109,7 @@ function update() {
 
     let landed = false
 
-    for (let object of level.objects) {
+    for (let object of currentLevel.objects) {
         const collisionSide = object.detectCollison(player)
 
         // no collision happened
@@ -144,7 +155,7 @@ function update() {
         }
     }
 
-    for (let _switch of level.switches) {
+    for (let _switch of currentLevel.switches) {
         const collided = _switch.detectCollison(player)
 
         if (collided) {
@@ -152,7 +163,7 @@ function update() {
         }
     }
 
-    for (let laser of level.lasers) {
+    for (let laser of currentLevel.lasers) {
         const collided = laser.detectCollison(player)
 
         if (collided) {
@@ -161,7 +172,7 @@ function update() {
         }
     }
 
-    const finishReached = level.finish.detectCollison(player)
+    const finishReached = currentLevel.finish.detectCollison(player)
     if (finishReached) {
         finishLevel()
     }
@@ -180,66 +191,26 @@ function show() {
     // translate to player position to show the spaceship in the middle of the screen
     translate(-player.position.x + width / 2, -player.position.y + height / 2)
 
-    for (let object of level.objects) {
+    for (let object of currentLevel.objects) {
         object.show()
     }
 
-    for (let _switch of level.switches) {
+    for (let _switch of currentLevel.switches) {
         _switch.show()
     }
 
-    for (let laser of level.lasers) {
+    for (let laser of currentLevel.lasers) {
         laser.show()
     }
 
-    level.finish.show()
+    currentLevel.finish.show()
 
     player.show()
 
     pop()
 }
 
-function resetLevel() {
-    player.position = createVector(width / 2, height / 2)
-    player.velocity = createVector(0, 0)
-
-    for (let _switch of level.switches) {
-        _switch.deactivate()
-    }
-
-    for (let laser of level.lasers) {
-        laser.activate()
-    }
-
-    this.levelFinished = false
-}
-
-function finishLevel() {
-    this.levelFinished = true
-
-    push()
-
-    // curtain
-    fill(0, 0, 0, 100)
-    rectMode(CORNER)
-    rect(0, 0, width, height)
-
-    // text
-    noStroke()
-    fill(255)
-    textSize(32)
-    textAlign(CENTER)
-    textStyle(BOLD)
-    text("LEVEL FINISHED", width / 2, height / 2)
-
-    pop()
-
-    // resume game after 5 seconds
-    setTimeout(() => {
-        resetLevel()
-    }, 3000)
-}
-
+let fps = 60
 function drawDebugInfo() {
     // calculate fps (update var every once/twice a second)
     if (frameCount % 30 == 0) {
@@ -289,4 +260,3 @@ function drawDebugInfo() {
     pop()
 }
 
-let fps = 60
