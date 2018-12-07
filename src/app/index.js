@@ -40,7 +40,9 @@ function initializeLevel() {
         currentLevelId = currentLevel.id + 1
     }
 
-    loadJSON(`./data/levels/level-${currentLevelId}.json`, levelData => {
+    let url = `./data/levels/level-${currentLevelId}.json`
+
+    loadJSON(url, levelData => {
         if (!levelData) return
 
         currentLevel = new Level()
@@ -52,7 +54,7 @@ function initializeLevel() {
             player.position = currentLevel.start.position.copy()
         }
         catch (ex) {
-            console.log(ex)
+            console.error(ex, `Failed to load level file: ${url}`)
         }
     })
 }
@@ -62,13 +64,13 @@ function initializeLevel() {
  *
  * The players position, all switches and all lasers will be resetted.
  */
-function resetLevel() {
+function resetLevel(resetTime) {
     // reset player
     player.position = currentLevel.start.position.copy()
     player.velocity = createVector(0, 0)
 
     // reset level
-    currentLevel.reset()
+    currentLevel.reset(resetTime)
 }
 
 /**
@@ -76,6 +78,7 @@ function resetLevel() {
  * before loading the next level.
  */
 function finishLevel() {
+    storeHighscore(currentLevel.id, Date.now() - currentLevel.startTime)
     currentLevel.finished = true
 
     push()
@@ -97,7 +100,7 @@ function finishLevel() {
 
     // resume game after 3 seconds
     setTimeout(() => {
-        resetLevel()
+        resetLevel(true)
     }, 3000)
 }
 
@@ -106,20 +109,18 @@ function finishLevel() {
  * The game loop.
  */
 function draw() {
-    if (!currentLevel || !currentLevel.initialized) {
-        // wait for level to load
-        return
-    }
+    // wait for level to load
+    if (!currentLevel || !currentLevel.initialized) return
 
-    if (currentLevel.finished) {
-        // wait for level end screen to finish
-        return
-    }
+    // wait for level end screen to finish
+    if (currentLevel.finished) return
 
     const redrawCanvas = update()
 
     if (redrawCanvas) {
         show()
+
+        drawHud()
 
         if (DEBUG) {
             this.drawDebugInfo()
@@ -141,7 +142,7 @@ function update() {
 
     // reset level if user presses the key R
     if (keyIsDown(KEYS.R)) {
-        resetLevel()
+        resetLevel(true)
         return
     }
 
@@ -246,6 +247,32 @@ function show() {
 
     // the player should overlap all other objects
     player.show()
+
+    pop()
+}
+
+function drawHud() {
+    push()
+
+    noStroke()
+    fill(255)
+    textSize(36)
+
+    // current time
+    textAlign(LEFT, TOP)
+    text(formatTime(Date.now() - currentLevel.startTime), 25, 25)
+
+    // level name
+    textAlign(RIGHT, TOP)
+    text(currentLevel.name, width - 25, 25)
+
+    textSize(22)
+
+    // level id
+    text(`LEVEL ${currentLevel.id}`, width - 25, 70)
+
+    textAlign(LEFT, TOP)
+    text(formatTime(currentLevel.highscore) || "00:00:00", 26, 70)
 
     pop()
 }

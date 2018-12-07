@@ -1,3 +1,7 @@
+# Spaceventure 0.7.0 (Nov 07, 2018)
+* Added level best times (persisted locally on device)
+* Added player HUD (times and level info)
+
 # Spaceventure 0.6.0 (Nov 07, 2018)
 * Levels are now configured by JSON files
 

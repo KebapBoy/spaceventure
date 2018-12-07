@@ -19,5 +19,5 @@ module.exports = {
             "/vendor": "./node_modules",
         },
     },
-    "port": 8080,
+    "port": 80,
 }

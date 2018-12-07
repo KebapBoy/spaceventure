@@ -13,7 +13,7 @@ class Finish extends BoundingBox {
         noFill()
         rect(0, 0, this.width, this.height)
 
-        textAlign(CENTER)
+        textAlign(CENTER, CENTER)
         text("FINISH", 0, 0)
 
         super.show()

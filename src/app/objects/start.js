@@ -13,7 +13,7 @@ class Start extends BoundingBox {
         noFill()
         rect(0, 0, this.width, this.height)
 
-        textAlign(CENTER)
+        textAlign(CENTER, CENTER)
         text("START", 0, 0)
 
         super.show()
