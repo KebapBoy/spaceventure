@@ -1,6 +1,6 @@
 class Switch extends Sprite {
-    constructor(x, y, w, h) {
-        super(x, y, w, h)
+    constructor(x, y) {
+        super(x, y, 20, 30)
 
         this.active = false
         this.color = color(0, 0, 255, 126)
@@ -31,6 +31,8 @@ class Switch extends Sprite {
     show() {
         push()
 
+        strokeWeight(5)
+
         for (let laser of this.connectedLaser) {
             // draw connection line to laser
 
@@ -41,7 +43,7 @@ class Switch extends Sprite {
                 stroke(0, 0, 255, 100)
             }
 
-            dashline(this.position.x, this.position.y, laser.socketPosition.x, laser.socketPosition.y, 5, 5)
+            dashline(this.position.x, this.position.y, laser.socketPosition.x, laser.socketPosition.y, 10, 10)
         }
 
         pop()

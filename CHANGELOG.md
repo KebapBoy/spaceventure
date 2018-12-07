@@ -1,3 +1,6 @@
+# Spaceventure 0.6.0 (Nov 07, 2018)
+* Levels are now configured by JSON files
+
 # Spaceventure 0.5.2 (Nov 05, 2018)
 * Added initial player position for each level
 

@@ -12,9 +12,9 @@ function setup() {
     // always work with degree angles
     angleMode(DEGREES)
 
-    currentLevel = initializeLevel()
+    initializeLevel()
 
-    player = new Spaceship(currentLevel.start.x, currentLevel.start.y, 30, 40)
+    player = new Spaceship(0, 0, 30, 40)
     player.friction = 0.01
     player.flexibility = 0.5
 
@@ -40,7 +40,21 @@ function initializeLevel() {
         currentLevelId = currentLevel.id + 1
     }
 
-    return window[`getLevel${currentLevelId}`]()
+    loadJSON(`./data/levels/level-${currentLevelId}.json`, levelData => {
+        if (!levelData) return
+
+        currentLevel = new Level()
+
+        try {
+            currentLevel.initialize(levelData)
+
+            // set spaceship to start position
+            player.position = currentLevel.start.position.copy()
+        }
+        catch (ex) {
+            console.log(ex)
+        }
+    })
 }
 
 /**
@@ -49,18 +63,12 @@ function initializeLevel() {
  * The players position, all switches and all lasers will be resetted.
  */
 function resetLevel() {
-    player.position = currentLevel.start.copy()
+    // reset player
+    player.position = currentLevel.start.position.copy()
     player.velocity = createVector(0, 0)
 
-    for (let _switch of currentLevel.switches) {
-        _switch.deactivate()
-    }
-
-    for (let laser of currentLevel.lasers) {
-        laser.activate()
-    }
-
-    currentLevel.finished = false
+    // reset level
+    currentLevel.reset()
 }
 
 /**
@@ -98,6 +106,11 @@ function finishLevel() {
  * The game loop.
  */
 function draw() {
+    if (!currentLevel || !currentLevel.initialized) {
+        // wait for level to load
+        return
+    }
+
     if (currentLevel.finished) {
         // wait for level end screen to finish
         return
@@ -136,15 +149,15 @@ function update() {
 
     let landed = false
 
-    for (let object of currentLevel.objects) {
-        const collisionSide = object.detectCollison(player)
+    for (let platform of currentLevel.platforms) {
+        const collisionSide = platform.detectCollison(player)
 
         if (!collisionSide) {
             // no collision happened
             continue
         }
 
-        if (!object.landable) {
+        if (!platform.landable) {
             // hit a not landable object
             resetLevel()
             return
@@ -153,14 +166,14 @@ function update() {
         // bounce of landable object
         if (collisionSide == "bottom" || collisionSide == "top") {
             if (collisionSide == "bottom") {
-                // bounce of from objects top side -> landed on object
+                // bounce of from platforms top side -> landed on object
                 landed = true
-                let objectPosition = object.getPosition("top")
+                let objectPosition = platform.getPosition("top")
                 player.position.y = objectPosition.y - (player.height / 2)
             }
             else {
-                // bounce of from objects bottom side
-                let objectPosition = object.getPosition("bottom")
+                // bounce of from platforms bottom side
+                let objectPosition = platform.getPosition("bottom")
                 player.position.y = objectPosition.y + (player.height / 2)
             }
 
@@ -169,13 +182,13 @@ function update() {
         }
         else {
             if (collisionSide == "left") {
-                // bounce of from objects right side
-                let objectPosition = object.getPosition("right")
+                // bounce of from platforms right side
+                let objectPosition = platform.getPosition("right")
                 player.position.x = objectPosition.x + (player.width / 2)
             }
             else {
-                // bounce of from objects left side
-                let objectPosition = object.getPosition("left")
+                // bounce of from platforms left side
+                let objectPosition = platform.getPosition("left")
                 player.position.x = objectPosition.x - (player.width / 2)
             }
 
@@ -228,19 +241,8 @@ function show() {
     // translate to player position to show the spaceship in the middle of the screen
     translate(-player.position.x + width / 2, -player.position.y + height / 2)
 
-    for (let object of currentLevel.objects) {
-        object.show()
-    }
-
-    for (let _switch of currentLevel.switches) {
-        _switch.show()
-    }
-
-    for (let laser of currentLevel.lasers) {
-        laser.show()
-    }
-
-    currentLevel.finish.show()
+    // show all objects of the current level
+    currentLevel.show()
 
     // the player should overlap all other objects
     player.show()

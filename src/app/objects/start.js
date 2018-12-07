@@ -1,4 +1,4 @@
-class Finish extends BoundingBox {
+class Start extends BoundingBox {
     constructor(x, y) {
         super(x, y, 50, 50)
     }
@@ -14,7 +14,7 @@ class Finish extends BoundingBox {
         rect(0, 0, this.width, this.height)
 
         textAlign(CENTER)
-        text("FINISH", 0, 0)
+        text("START", 0, 0)
 
         super.show()
 

@@ -1,7 +1,8 @@
 class Laser extends BoundingBox {
-    constructor(x, y, length, socket) {
+    constructor(x, y, length, name, socket) {
         super(x, y, 5, length)
 
+        this.name = name
         this.active = true
         this.socket = socket
 
