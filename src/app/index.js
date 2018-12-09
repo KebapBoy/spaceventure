@@ -45,16 +45,17 @@ function initializeLevel() {
     loadJSON(url, levelData => {
         if (!levelData) return
 
-        currentLevel = new Level()
+        currentLevel = new Level(levelData)
 
-        try {
-            currentLevel.initialize(levelData)
-
+        if (currentLevel.valid) {
             // set spaceship to start position
             player.position = currentLevel.start.position.copy()
         }
-        catch (ex) {
-            console.error(ex, `Failed to load level file: ${url}`)
+        else {
+            console.error(
+                "The level file does not contain valid data.",
+                `Failed to load level file: ${url}`
+            )
         }
     })
 }

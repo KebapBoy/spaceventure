@@ -1,23 +1,16 @@
-class Finish extends BoundingBox {
+class Finish extends Sprite {
     constructor(x, y) {
         super(x, y, 50, 50)
     }
 
-    show() {
-        push()
-
-        rectMode(CENTER)
-        translate(this.position.x, this.position.y)
-
+    _draw() {
         stroke(255)
         noFill()
+
+        rectMode(CENTER)
         rect(0, 0, this.width, this.height)
 
         textAlign(CENTER, CENTER)
         text("FINISH", 0, 0)
-
-        super.show()
-
-        pop()
     }
 }

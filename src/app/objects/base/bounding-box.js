@@ -1,3 +1,6 @@
+/**
+ * Adds a bounding box for collision to an object.
+ */
 class BoundingBox {
     constructor(x, y, w, h) {
         this.position = createVector(x, y)

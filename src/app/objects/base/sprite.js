@@ -1,3 +1,6 @@
+/**
+ * Adds movability and representation to an object.
+ */
 class Sprite extends BoundingBox {
     constructor(x, y, w, h) {
         super(x, y, w, h)
@@ -26,12 +29,9 @@ class Sprite extends BoundingBox {
     show() {
         push()
 
-        rectMode(CENTER)
         translate(this.position.x, this.position.y)
 
-        noStroke()
-        fill(this.color)
-        rect(0, 0, this.width, this.height)
+        this._draw()
 
         super.show()
 
@@ -47,5 +47,13 @@ class Sprite extends BoundingBox {
         }
 
         pop()
+    }
+
+    _draw() {
+        noStroke()
+        fill(this.color)
+
+        rectMode(CENTER)
+        rect(0, 0, this.width, this.height)
     }
 }

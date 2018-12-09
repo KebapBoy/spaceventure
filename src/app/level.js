@@ -1,7 +1,7 @@
-// Todo: make class static
 class Level {
-    constructor() {
-        this.initialized = false
+    constructor(data) {
+        this.valid = this._validateLevelFile(data)
+        if (!this.valid) return
 
         this.id = 0
         this.name = undefined
@@ -14,26 +14,56 @@ class Level {
 
         this.finished = false
 
-        this.startTime = undefined
         this.highscore = undefined
+        this.startTime = undefined
+
+        this.initialized = false
+        this._initialize(data)
     }
 
-    validateLevelFile(data) {
-        if (
-            !data || // file is empty
-            data.id == undefined || // no id
-            !data.name || // no name
-            !data.start || !data.start.x == undefined || !data.start.y == undefined || // no(t a valid) start point
-            !data.finish || !data.finish.x == undefined || !data.finish.y == undefined// no(t a valid) finish
-        ) {
-            throw "The level file does not contain valid data."
+    reset(resetTime) {
+        for (let _switch of this.switches) {
+            _switch.deactivate()
+        }
+
+        for (let laser of this.lasers) {
+            laser.activate()
+        }
+
+        this.finished = false
+
+        if (resetTime) {
+            this.highscore = getHighscore(this.id)
+            this.startTime = Date.now()
         }
     }
 
-    // Todo: implement static initialize to create a level class
-    initialize(data) {
-        this.validateLevelFile(data)
+    show() {
+        this.start.show()
+        this.finish.show()
 
+        for (let platform of this.platforms) {
+            platform.show()
+        }
+
+        for (let _switch of this.switches) {
+            _switch.show()
+        }
+
+        for (let laser of this.lasers) {
+            laser.show()
+        }
+    }
+
+    _validateLevelFile(data) {
+        return data && // file is empty
+            data.id != undefined && // no id
+            data.name && // no name
+            data.start && data.start.x != undefined && data.start.y != undefined && // no(t a valid) start point
+            data.finish && data.finish.x != undefined && data.finish.y != undefined// no(t a valid) finish
+    }
+
+    _initialize(data) {
         this.id = data.id
         this.name = data.name
         this.start = new Start(data.start.x, data.start.y)
@@ -99,42 +129,8 @@ class Level {
             }
         }
 
-        this.startTime = Date.now()
         this.highscore = getHighscore(this.id)
+        this.startTime = Date.now()
         this.initialized = true
-    }
-
-    reset(resetTime) {
-        for (let _switch of this.switches) {
-            _switch.deactivate()
-        }
-
-        for (let laser of this.lasers) {
-            laser.activate()
-        }
-
-        this.finished = false
-
-        if (resetTime) {
-            this.startTime = Date.now()
-            this.highscore = getHighscore(this.id)
-        }
-    }
-
-    show() {
-        this.start.show()
-        this.finish.show()
-
-        for (let platform of this.platforms) {
-            platform.show()
-        }
-
-        for (let _switch of this.switches) {
-            _switch.show()
-        }
-
-        for (let laser of this.lasers) {
-            laser.show()
-        }
     }
 }
