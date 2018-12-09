@@ -1,3 +1,7 @@
+# Spaceventure 0.7.1 (Nov 09, 2018)
+* Spaceship now leans in the flying direction
+* The switch now has a new appearance with two different states
+
 # Spaceventure 0.7.0 (Nov 07, 2018)
 * Added level best times (persisted locally on device)
 * Added player HUD (times and level info)

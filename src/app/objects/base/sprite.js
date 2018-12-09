@@ -9,8 +9,6 @@ class Sprite extends BoundingBox {
 
         this.friction = 0
         this.flexibility = 1
-
-        this.color = color(255)
     }
 
     addForce(force, angle) {
@@ -49,11 +47,5 @@ class Sprite extends BoundingBox {
         pop()
     }
 
-    _draw() {
-        noStroke()
-        fill(this.color)
-
-        rectMode(CENTER)
-        rect(0, 0, this.width, this.height)
-    }
+    _draw() { }
 }

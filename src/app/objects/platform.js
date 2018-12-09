@@ -3,6 +3,19 @@ class Platform extends Sprite {
         super(x, y, w, h)
 
         this.landable = landable
-        this.color = this.landable ? color(0, 255, 0) : color(255, 0, 0)
+    }
+
+    _draw() {
+        noStroke()
+
+        if (this.landable) {
+            fill(color(0, 255, 0))
+        }
+        else {
+            fill(color(255, 0, 0))
+        }
+
+        rectMode(CENTER)
+        rect(0, 0, this.width, this.height)
     }
 }

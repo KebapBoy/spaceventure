@@ -39,7 +39,7 @@ class Laser extends Sprite {
         }
 
         // draw socket
-        fill(255, 255, 255)
+        fill(255)
         rect(0, -this.height / 2 + 5, 12, 10)
     }
 }

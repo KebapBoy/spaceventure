@@ -59,7 +59,7 @@
     "switches": [
         {
             "x": 1020,
-            "y": 355,
+            "y": 350,
             "connected": [
                 "laser-1"
             ]

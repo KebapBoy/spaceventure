@@ -14,7 +14,7 @@ function setup() {
 
     initializeLevel()
 
-    player = new Spaceship(0, 0, 30, 40)
+    player = new Spaceship()
     player.friction = 0.01
     player.flexibility = 0.5
 
@@ -48,8 +48,8 @@ function initializeLevel() {
         currentLevel = new Level(levelData)
 
         if (currentLevel.valid) {
-            // set spaceship to start position
-            player.position = currentLevel.start.position.copy()
+            // set spaceship start position
+            player.startPosition = currentLevel.start.position.copy()
         }
         else {
             console.error(
@@ -67,8 +67,7 @@ function initializeLevel() {
  */
 function resetLevel(resetTime) {
     // reset player
-    player.position = currentLevel.start.position.copy()
-    player.velocity = createVector(0, 0)
+    player.reset()
 
     // reset level
     currentLevel.reset(resetTime)
@@ -199,10 +198,13 @@ function update() {
     }
 
     for (let _switch of currentLevel.switches) {
-        const collided = _switch.detectCollison(player)
+        const collisionSide = _switch.detectCollison(player)
 
-        if (collided) {
+        if (collisionSide == "right") {
             _switch.activate()
+        }
+        else if (collisionSide == "left") {
+            _switch.deactivate()
         }
     }
 
