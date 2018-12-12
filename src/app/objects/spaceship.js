@@ -1,4 +1,4 @@
-let path = []
+let path = [{ x: 0, y: 0 }]
 
 class Spaceship extends Sprite {
     constructor() {
@@ -23,7 +23,7 @@ class Spaceship extends Sprite {
         this.position = this.startPosition.copy()
         this.velocity = createVector(0, 0)
 
-        path = []
+        path = [{ x: this.position.x, y: this.position.y }]
     }
 
     update() {
@@ -83,7 +83,15 @@ class Spaceship extends Sprite {
         super.update()
 
         if (DEBUG) {
-            path.push({ x: this.position.x, y: this.position.y })
+            // update path only every fith frame ...
+            if (frameCount % 5 == 0) {
+                const lastPoint = path[path.length - 1]
+
+                // ... and only when the position changed
+                if (this.position.x != lastPoint.x || this.position.y != lastPoint.y) {
+                    path.push({ x: this.position.x, y: this.position.y })
+                }
+            }
         }
     }
 
@@ -93,8 +101,8 @@ class Spaceship extends Sprite {
 
             stroke(255, 0, 0)
 
-            for (let point of path) {
-                line(point.x, point.y, point.x, point.y)
+            for (let i = 1; i < path.length; i++) {
+                line(path[i - 1].x, path[i - 1].y, path[i].x, path[i].y)
             }
 
             pop()
