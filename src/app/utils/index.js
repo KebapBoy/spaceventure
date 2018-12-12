@@ -51,7 +51,7 @@ function getHighscore(levelId) {
 function setOrGetDebug(debug) {
     if (debug == undefined) {
         // initialize variable with stored or fallback
-        debug = localStorage.getItem("debug") || false
+        debug = localStorage.getItem("debug") === "true"
     }
     else {
         localStorage.setItem("debug", debug)
