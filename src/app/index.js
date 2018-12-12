@@ -7,7 +7,7 @@ let player
  */
 function setup() {
     // the canvas should fill the browser viewport
-    createCanvas(windowWidth, windowHeight)
+    const renderer = createCanvas(windowWidth, windowHeight)
 
     // always work with degree angles
     angleMode(DEGREES)
@@ -19,7 +19,7 @@ function setup() {
     player.flexibility = 0.5
 
     // prevent contextmenu on mouse right click
-    document.getElementsByTagName("canvas")[0].addEventListener("contextmenu", e => e.preventDefault())
+    renderer.canvas.addEventListener("contextmenu", e => e.preventDefault())
 
     // resize canvas on browser resize
     window.addEventListener("resize", () => resizeCanvas(windowWidth, windowHeight))

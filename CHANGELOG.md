@@ -1,22 +1,25 @@
-# Spaceventure 0.7.1 (Nov 09, 2018)
+# Spaceventure 0.8.0 (Dec 12, 2018)
+* Spaceventure is now installable as standalone app on Android
+
+# Spaceventure 0.7.1 (Dec 09, 2018)
 * Spaceship now leans in the flying direction
 * The switch now has a new appearance with two different states
 
-# Spaceventure 0.7.0 (Nov 07, 2018)
+# Spaceventure 0.7.0 (Dec 07, 2018)
 * Added level best times (persisted locally on device)
 * Added player HUD (times and level info)
 
-# Spaceventure 0.6.0 (Nov 07, 2018)
+# Spaceventure 0.6.0 (Dec 07, 2018)
 * Levels are now configured by JSON files
 
-# Spaceventure 0.5.2 (Nov 05, 2018)
+# Spaceventure 0.5.2 (Dec 05, 2018)
 * Added initial player position for each level
 
-# Spaceventure 0.5.1 (Nov 05, 2018)
+# Spaceventure 0.5.1 (Dec 05, 2018)
 * Added control to restart level
 * The dimensions of the test level are now independent of the screen size
 
-# Spaceventure 0.5.0 (Nov 02, 2018)
+# Spaceventure 0.5.0 (Dec 02, 2018)
 * Added: laser, switch, finish
 * Improved test level
 * Implemented touch gesture input
