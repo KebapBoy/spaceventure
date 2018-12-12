@@ -29,7 +29,9 @@ class Sprite extends BoundingBox {
 
         translate(this.position.x, this.position.y)
 
+        push()
         this._draw()
+        pop()
 
         super.show()
 
