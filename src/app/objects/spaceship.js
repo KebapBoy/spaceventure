@@ -1,3 +1,5 @@
+let path = []
+
 class Spaceship extends Sprite {
     constructor() {
         super(0, 0, 30, 40)
@@ -20,6 +22,8 @@ class Spaceship extends Sprite {
 
         this.position = this.startPosition.copy()
         this.velocity = createVector(0, 0)
+
+        path = []
     }
 
     update() {
@@ -77,6 +81,26 @@ class Spaceship extends Sprite {
         }
 
         super.update()
+
+        if (DEBUG) {
+            path.push({ x: this.position.x, y: this.position.y })
+        }
+    }
+
+    show() {
+        if (DEBUG) {
+            push()
+
+            stroke(255, 0, 0)
+
+            for (let point of path) {
+                line(point.x, point.y, point.x, point.y)
+            }
+
+            pop()
+        }
+
+        super.show()
     }
 
     _draw() {
