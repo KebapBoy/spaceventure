@@ -58,6 +58,8 @@ class BoundingBox {
             // draw bounding box
             noFill()
             stroke(255, 0, 0)
+
+            rectMode(CENTER)
             rect(0, 0, this.width, this.height)
 
             pop()
