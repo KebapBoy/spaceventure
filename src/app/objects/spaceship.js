@@ -4,7 +4,7 @@ class Spaceship extends Sprite {
     constructor() {
         super(0, 0, 30, 40)
 
-        this.MAX_ANGLE = 15
+        this.MAX_ANGLE = 16
 
         this.leftThrust = false
         this.rightThrust = false
