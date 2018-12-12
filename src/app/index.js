@@ -160,7 +160,7 @@ function update() {
 
     let landed = false
 
-    for (let platform of currentLevel.platforms) {
+    for (const platform of currentLevel.platforms) {
         const collisionSide = platform.detectCollison(player)
 
         if (!collisionSide) {
@@ -207,7 +207,7 @@ function update() {
         }
     }
 
-    for (let _switch of currentLevel.switches) {
+    for (const _switch of currentLevel.switches) {
         const collisionSide = _switch.detectCollison(player)
 
         if (collisionSide == "right") {
@@ -218,7 +218,7 @@ function update() {
         }
     }
 
-    for (let laser of currentLevel.lasers) {
+    for (const laser of currentLevel.lasers) {
         const collided = laser.detectCollison(player)
 
         if (collided) {

@@ -10,7 +10,7 @@ class Switch extends Sprite {
     activate() {
         this.active = true
 
-        for (let laser of this.connectedLaser) {
+        for (const laser of this.connectedLaser) {
             if (typeof laser.activate == "function") {
                 laser.deactivate()
             }
@@ -20,7 +20,7 @@ class Switch extends Sprite {
     deactivate() {
         this.active = false
 
-        for (let laser of this.connectedLaser) {
+        for (const laser of this.connectedLaser) {
             if (typeof laser.activate == "function") {
                 laser.activate()
             }
@@ -36,7 +36,7 @@ class Switch extends Sprite {
 
         strokeWeight(5)
 
-        for (let laser of this.connectedLaser) {
+        for (const laser of this.connectedLaser) {
             // draw connection line to laser
 
             if (this.active) {

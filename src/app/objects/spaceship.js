@@ -101,7 +101,7 @@ class Spaceship extends Sprite {
 
             stroke(255, 0, 0)
 
-            for (let i = 1; i < path.length; i++) {
+            for (const i = 1; i < path.length; i++) {
                 line(path[i - 1].x, path[i - 1].y, path[i].x, path[i].y)
             }
 

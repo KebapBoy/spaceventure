@@ -22,11 +22,11 @@ class Level {
     }
 
     reset(resetTime) {
-        for (let _switch of this.switches) {
+        for (const _switch of this.switches) {
             _switch.deactivate()
         }
 
-        for (let laser of this.lasers) {
+        for (const laser of this.lasers) {
             laser.activate()
         }
 
@@ -42,15 +42,15 @@ class Level {
         this.start.show()
         this.finish.show()
 
-        for (let platform of this.platforms) {
+        for (const platform of this.platforms) {
             platform.show()
         }
 
-        for (let _switch of this.switches) {
+        for (const _switch of this.switches) {
             _switch.show()
         }
 
-        for (let laser of this.lasers) {
+        for (const laser of this.lasers) {
             laser.show()
         }
     }
@@ -71,7 +71,7 @@ class Level {
 
         // create all platforms
         if (Array.isArray(data.platforms)) {
-            for (let platformData of data.platforms) {
+            for (const platformData of data.platforms) {
                 if (!platformData) continue
 
                 let platform = new Platform(
@@ -88,7 +88,7 @@ class Level {
 
         // create all lasers
         if (Array.isArray(data.lasers)) {
-            for (let laserData of data.lasers) {
+            for (const laserData of data.lasers) {
                 if (!laserData) continue
 
                 let laser = new Laser(
@@ -104,7 +104,7 @@ class Level {
 
         // create all switches
         if (Array.isArray(data.switches)) {
-            for (let switchData of data.switches) {
+            for (const switchData of data.switches) {
                 if (!switchData) continue
 
                 let _switch = new Switch(
@@ -114,7 +114,7 @@ class Level {
 
                 // connect lasers to the switch
                 if (Array.isArray(switchData.connected)) {
-                    for (let connected of switchData.connected) {
+                    for (const connected of switchData.connected) {
                         if (!connected) continue
 
                         let laser = this.lasers.find(laser => laser.name == connected)
