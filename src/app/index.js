@@ -23,6 +23,16 @@ function setup() {
 
     // resize canvas on browser resize
     window.addEventListener("resize", () => resizeCanvas(windowWidth, windowHeight))
+
+    // initialize DEBUG variable
+    DEBUG = setOrGetDebug()
+
+    // toggle DEBUG
+    document.addEventListener("keypress", e => {
+        if (e.keyCode == KEYS.D && e.shiftKey) {
+            DEBUG = setOrGetDebug(!DEBUG)
+        }
+    })
 }
 
 /**

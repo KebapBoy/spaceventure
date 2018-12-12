@@ -47,3 +47,15 @@ function getHighscore(levelId) {
     let highscore = localStorage.getItem(`highscore-level-${levelId}`)
     return highscore ? parseInt(highscore) : null
 }
+
+function setOrGetDebug(debug) {
+    if (debug == undefined) {
+        // initialize variable with stored or fallback
+        debug = localStorage.getItem("debug") || false
+    }
+    else {
+        localStorage.setItem("debug", debug)
+    }
+
+    return debug
+}

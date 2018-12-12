@@ -25,6 +25,9 @@ Activate switches to disabled lasers and reach the finish (white framed area).
 For easier development install all dependencies by running `yarn install` in your command prompt.
 Then `yarn debug` to start browser-sync.
 
+### Debug information
+
+You can enable/disable debug information by clicking `Shift+D` while the game is running. The state will be persisted.
 
 ## License
 
