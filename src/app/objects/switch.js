@@ -79,7 +79,7 @@ class Switch extends Sprite {
 
         // rod
         rotate(rodAngle)
-        rect(0, -this.height / 2 + 2, 4, this.height)
+        rect(0, -this.height / 2 + 2, 4, this.height - 4)
 
         // knob
         fill(knobColor)
