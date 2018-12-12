@@ -23,7 +23,7 @@ function dashline(x0, y0, x1, y1, dash, gap) {
           a few dozen bytes than have to do a calculation every time
           I draw.
         */
-        for (const i = 0; i < spacing.length; i++) {
+        for (let i = 0; i < spacing.length; i++) {
             xSpacing[i] = lerp(0, (x1 - x0), spacing[i] / distance)
             ySpacing[i] = lerp(0, (y1 - y0), spacing[i] / distance)
         }
