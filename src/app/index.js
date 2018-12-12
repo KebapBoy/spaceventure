@@ -299,7 +299,7 @@ function drawDebugInfo() {
 
     push()
 
-    translate(25, 25)
+    translate(width - 200, height - 125)
 
     // frame
     push()
