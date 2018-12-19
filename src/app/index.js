@@ -256,6 +256,13 @@ function draw() {
  * Returns a boolean which indicated if the canvas should be redrawn or not
  */
 function update() {
+
+    // reset level if user presses the key R
+    if (keyIsDown(KEYS.R)) {
+        resetLevel(true)
+        return
+    }
+
     player.update()
 
     let landed = false
@@ -473,16 +480,4 @@ function showError() {
     text(error.message, 50, height / 2 + 32, width - 100)
 
     pop()
-}
-
-/**
- * Called by p5 when any key is pressed.
- */
-function keyPressed() {
-    switch (keyCode) {
-        case KEYS.R:
-            // reset level if user presses the key R
-            resetLevel(true)
-            break
-    }
 }
