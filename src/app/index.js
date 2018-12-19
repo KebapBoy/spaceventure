@@ -1,22 +1,38 @@
-let currentLevel = undefined
+const levels = []
+let currentLevel
+
 let player
 
+let error
+
+let appFont
+
 /**
- * Called by p5 at game start.
+ * Called by p5 at before game start (before setup).
+ * Load game data.
+ */
+function preload() {
+    loadGameData()
+}
+
+/**
+ * Called by p5 at game start after all game data is completly loaded.
  * Initialize the game.
  */
 function setup() {
+    // sort levels by id in ascending order
+    levels.sort((a, b) => a.id - b.id)
+
     // the canvas should fill the browser viewport
     const renderer = createCanvas(windowWidth, windowHeight)
 
     // always work with degree angles
     angleMode(DEGREES)
 
-    initializeLevel()
+    // hide mouse cursor
+    noCursor()
 
-    player = new Spaceship()
-    player.friction = 0.01
-    player.flexibility = 0.5
+    textFont(appFont)
 
     // prevent contextmenu on mouse right click
     renderer.canvas.addEventListener("contextmenu", e => e.preventDefault())
@@ -33,6 +49,49 @@ function setup() {
             DEBUG = setOrGetDebug(!DEBUG)
         }
     })
+
+    player = new Spaceship()
+    player.friction = 0.01
+    player.flexibility = 0.5
+
+    initializeLevel()
+}
+
+function loadGameData() {
+    let dataFolder = "./data"
+    let levelsFolder = `${dataFolder}/levels`
+
+    // load font
+    appFont = loadFont('./fonts/abel.ttf')
+
+    // load levels
+    loadJSON(`${levelsFolder}/levels.json`, levelFiles => {
+        if (!Array.isArray(levelFiles) || !levelFiles.length) {
+            error = {
+                title: "Die Level-Datei ist fehlerhaft.",
+                message: "Bitte stelle sicher, dass die Datei unbeschädigt ist und starte das Spiel neu."
+            }
+            return
+        }
+
+        // load level files
+        for (const file of levelFiles) {
+            const url = `${levelsFolder}/${file}`
+
+            loadJSON(url, levelData => {
+                if (levelData) {
+                    const level = new Level(levelData)
+
+                    if (level.valid) {
+                        levels.push(level)
+                        return
+                    }
+                }
+
+                console.error(`Ein Level ist nicht verfügbar, da die Level-Datei '${url}' fehlerhaft ist.`)
+            })
+        }
+    })
 }
 
 /**
@@ -41,33 +100,27 @@ function setup() {
  * Either the first level on game start or the next level on level finish.
  */
 function initializeLevel() {
-    let currentLevelId
-
+    // if no level is currently active ...
     if (!currentLevel) {
-        currentLevelId = 1
+        // ... load the first ...
+        currentLevel = levels[0]
     }
     else {
-        currentLevelId = currentLevel.id + 1
+        // ... else load the next
+        currentLevel = levels[levels.indexOf(currentLevel) + 1]
     }
 
-    let url = `./data/levels/level-${currentLevelId}.json`
+    if (!currentLevel) {
+        // No level left -> Game finished
+        finishGame()
+        return
+    }
 
-    loadJSON(url, levelData => {
-        if (!levelData) return
+    // set spaceship start position
+    player.startPosition = currentLevel.start.position.copy()
+    player.reset()
 
-        currentLevel = new Level(levelData)
-
-        if (currentLevel.valid) {
-            // set spaceship start position
-            player.startPosition = currentLevel.start.position.copy()
-        }
-        else {
-            console.error(
-                "The level file does not contain valid data.",
-                `Failed to load level file: ${url}`
-            )
-        }
-    })
+    currentLevel.reset(true)
 }
 
 /**
@@ -84,11 +137,13 @@ function resetLevel(resetTime) {
 }
 
 /**
- * Finishes the current level and show an endscreen for a few seconds
+ * Finishes the current level and shows an endscreen for a few seconds
  * before loading the next level.
  */
 function finishLevel() {
-    storeHighscore(currentLevel.id, Date.now() - currentLevel.startTime)
+    const time = Date.now() - currentLevel.startTime
+
+    storeHighscore(currentLevel.id, time)
     currentLevel.finished = true
 
     push()
@@ -98,20 +153,67 @@ function finishLevel() {
     rectMode(CORNER)
     rect(0, 0, width, height)
 
-    // text
     noStroke()
     fill(255)
-    textSize(32)
-    textAlign(CENTER)
+
+    // text
+    push()
+    textSize(72)
+    textAlign(CENTER, BOTTOM)
     textStyle(BOLD)
-    text("LEVEL FINISHED", width / 2, height / 2)
+    text("Level geschafft!", width / 2, height / 2 - 72)
+    pop()
+
+    // time
+    push()
+    textSize(32)
+    textAlign(CENTER, TOP)
+    let label = (!currentLevel.highscore || time < currentLevel.highscore) ? "Neue Bestzeit" : "Deine Zeit"
+    text(`${label}: ${formatTime(time)}`, width / 2, height / 2 + 32)
+    pop()
 
     pop()
 
     // resume game after 3 seconds
     setTimeout(() => {
-        resetLevel(true)
+        initializeLevel()
     }, 3000)
+}
+
+/**
+ * Finishes the game and shows an endscreen for a few seconds
+ * before reloading the first level.
+ */
+function finishGame() {
+    push()
+
+    // curtain
+    fill(0)
+    rectMode(CORNER)
+    rect(0, 0, width, height)
+
+    noStroke()
+    fill(255)
+
+    // text
+    push()
+    textSize(72)
+    textAlign(CENTER, BOTTOM)
+    textStyle(BOLD)
+    text("Herzlichen Glückwunsch!", width / 2, height / 2 - 72)
+    pop()
+
+    // message
+    push()
+    textSize(32)
+    textAlign(CENTER, TOP)
+    text("Du hast erfolgreich alle Level von Spaceventure absolviert. Das Spiel startet nun von vorne.\nVersuche doch deine bisherigen Bestzeiten zu knacken.", 50, height / 2 + 32, width - 100)
+    pop()
+
+    // resume game after 3 seconds
+    setTimeout(() => {
+        initializeLevel()
+    }, 5000)
 }
 
 /**
@@ -119,6 +221,11 @@ function finishLevel() {
  * The game loop.
  */
 function draw() {
+    if (error) {
+        showError()
+        return
+    }
+
     // wait for level to load
     if (!currentLevel || !currentLevel.initialized) return
 
@@ -130,10 +237,10 @@ function draw() {
     if (redrawCanvas) {
         show()
 
-        drawHud()
+        showHud()
 
         if (DEBUG) {
-            this.drawDebugInfo()
+            showDebugInfo()
         }
     }
 }
@@ -149,13 +256,6 @@ function draw() {
  * Returns a boolean which indicated if the canvas should be redrawn or not
  */
 function update() {
-
-    // reset level if user presses the key R
-    if (keyIsDown(KEYS.R)) {
-        resetLevel(true)
-        return
-    }
-
     player.update()
 
     let landed = false
@@ -264,7 +364,7 @@ function show() {
     pop()
 }
 
-function drawHud() {
+function showHud() {
     push()
 
     noStroke()
@@ -277,7 +377,7 @@ function drawHud() {
 
     // level name
     textAlign(RIGHT, TOP)
-    text(currentLevel.name, width - 25, 25)
+    text(currentLevel.name.toUpperCase(), width - 25, 25)
 
     textSize(22)
 
@@ -291,7 +391,7 @@ function drawHud() {
 }
 
 let fps = 60
-function drawDebugInfo() {
+function showDebugInfo() {
     // calculate fps (update var every once/twice a second)
     if (frameCount % 30 == 0) {
         fps = parseInt(frameRate())
@@ -340,3 +440,49 @@ function drawDebugInfo() {
     pop()
 }
 
+function showError() {
+    push()
+
+    // curtain
+    fill(0, 0, 0, 150)
+    rectMode(CORNER)
+    rect(0, 0, width, height)
+
+    // headline
+    noStroke()
+    fill(255, 0, 0)
+    textSize(56)
+    textAlign(CENTER, BOTTOM)
+    textStyle(BOLD)
+    text("Fehler", 50, height / 2 - 192, width - 100)
+
+    // title
+    noStroke()
+    fill(255)
+    textSize(48)
+    textAlign(CENTER, BOTTOM)
+    textStyle(BOLD)
+    text(error.title, 50, height / 2 - 96, width - 100)
+
+    // message
+    noStroke()
+    fill(255)
+    textSize(32)
+    textAlign(CENTER, TOP)
+    textStyle(NORMAL)
+    text(error.message, 50, height / 2 + 32, width - 100)
+
+    pop()
+}
+
+/**
+ * Called by p5 when any key is pressed.
+ */
+function keyPressed() {
+    switch (keyCode) {
+        case KEYS.R:
+            // reset level if user presses the key R
+            resetLevel(true)
+            break
+    }
+}
