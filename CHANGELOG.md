@@ -1,3 +1,9 @@
+# Spaceventure 0.9.0 (Dec 19, 2018)
+* Added ending screen
+* Added new font for the interface
+* Improved level handling and added loading screen
+* Fixed a bug causing the highscore not to be saved
+
 # Spaceventure 0.8.0 (Dec 12, 2018)
 * Spaceventure is now installable as standalone app on Android
 
