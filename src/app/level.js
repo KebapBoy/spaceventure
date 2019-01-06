@@ -12,6 +12,8 @@ class Level {
         this.switches = []
         this.lasers = []
 
+        this.hints = []
+
         this.finished = false
 
         this.highscore = undefined
@@ -39,6 +41,10 @@ class Level {
     }
 
     show() {
+        for (const hint of this.hints) {
+            hint.show()
+        }
+
         this.start.show()
         this.finish.show()
 
@@ -126,6 +132,21 @@ class Level {
                 }
 
                 this.switches.push(_switch)
+            }
+        }
+
+        // create all hints
+        if (Array.isArray(data.hints)) {
+            for (const hintData of data.hints) {
+                if (!hintData) continue
+
+                let hint = new TutorialHint(
+                    hintData.x,
+                    hintData.y,
+                    hintData.text,
+                )
+
+                this.hints.push(hint)
             }
         }
 
