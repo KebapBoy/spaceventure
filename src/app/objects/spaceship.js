@@ -112,8 +112,9 @@ class Spaceship extends Sprite {
     }
 
     _draw() {
-        noStroke()
-        fill(255)
+        strokeWeight(2)
+        stroke(255)
+        fill(255, 255, 255, 175)
 
         rotate(this.angle)
 

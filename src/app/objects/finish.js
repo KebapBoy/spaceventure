@@ -1,16 +1,17 @@
 class Finish extends Sprite {
     constructor(x, y) {
-        super(x, y, 50, 50)
+        super(x, y, 60, 60)
     }
 
     _draw() {
-        stroke(255)
-        noFill()
-
+        noStroke()
+        fill(255, 255, 255, 75)
         rectMode(CENTER)
         rect(0, 0, this.width, this.height)
 
+        fill(255)
         textAlign(CENTER, CENTER)
-        text("FINISH", 0, 0)
+        textSize(24)
+        text("ZIEL", 0, 0)
     }
 }

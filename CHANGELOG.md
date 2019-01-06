@@ -1,3 +1,6 @@
+# Spaceventure 0.9.2 (Jan 06, 2019)
+* Improved graphics
+
 # Spaceventure 0.9.0 (Dec 19, 2018)
 * Added ending screen
 * Added new font for the interface

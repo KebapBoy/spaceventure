@@ -355,7 +355,7 @@ function update() {
  */
 function show() {
     // clear old frame
-    background(0)
+    background(20)
 
     push()
 
