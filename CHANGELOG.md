@@ -1,4 +1,5 @@
 # Spaceventure 0.9.2 (Jan 06, 2019)
+* Added new (tutorial) levels
 * Some hints will be shown to help the player learn new game mechanics
 * Improved graphics
 

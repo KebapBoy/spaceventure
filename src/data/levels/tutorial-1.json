@@ -1,6 +1,6 @@
 {
-    "id": 4,
-    "name": "Don't touch the wall!",
+    "id": 1,
+    "name": "Tutorial 1",
     "start": {
         "x": 0,
         "y": 0
@@ -10,42 +10,6 @@
         "y": -800
     },
     "platforms": [
-        {
-            "x": 100,
-            "y": -299,
-            "w": 10,
-            "h": 802
-        },
-        {
-            "x": 300,
-            "y": -501,
-            "w": 10,
-            "h": 802
-        },
-        {
-            "x": 520,
-            "y": -105,
-            "w": 450,
-            "h": 10
-        },
-        {
-            "x": 676,
-            "y": -300,
-            "w": 452,
-            "h": 10
-        },
-        {
-            "x": 520,
-            "y": -505,
-            "w": 450,
-            "h": 10
-        },
-        {
-            "x": 676,
-            "y": -700,
-            "w": 452,
-            "h": 10
-        },
         {
             "x": 400,
             "y": 150,
@@ -73,6 +37,13 @@
             "w": 100,
             "h": 1200,
             "landable": true
+        }
+    ],
+    "hints": [
+        {
+            "x": 100,
+            "y": -225,
+            "text": "Steuere das Raumschiff mit C und M oder indem du die linke bzw. rechte Bildschirmhälfte berührst.\n\nWie kannst du wohl nach oben fliegen?\n\nTipp: versuche es mit beiden Tasten bzw. Bildschirmhälften gleichzeitig."
         }
     ]
 }

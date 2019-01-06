@@ -1,6 +1,6 @@
 {
-    "id": 2,
-    "name": "Green Maze",
+    "id": 3,
+    "name": "Tutorial 2",
     "start": {
         "x": 0,
         "y": 0
@@ -11,46 +11,22 @@
     },
     "platforms": [
         {
-            "x": 100,
-            "y": -299,
-            "w": 10,
-            "h": 802,
-            "landable": true
-        },
-        {
-            "x": 300,
-            "y": -501,
-            "w": 10,
-            "h": 802,
-            "landable": true
-        },
-        {
-            "x": 520,
-            "y": -105,
-            "w": 450,
-            "h": 10,
-            "landable": true
-        },
-        {
-            "x": 676,
+            "x": 400,
             "y": -300,
-            "w": 452,
-            "h": 10,
-            "landable": true
+            "w": 500,
+            "h": 10
         },
         {
-            "x": 520,
-            "y": -505,
-            "w": 450,
-            "h": 10,
-            "landable": true
+            "x": 99,
+            "y": -500,
+            "w": 402,
+            "h": 10
         },
         {
-            "x": 676,
-            "y": -700,
-            "w": 452,
-            "h": 10,
-            "landable": true
+            "x": 701,
+            "y": -500,
+            "w": 402,
+            "h": 10
         },
         {
             "x": 400,
@@ -79,6 +55,13 @@
             "w": 100,
             "h": 1200,
             "landable": true
+        }
+    ],
+    "hints": [
+        {
+            "x": 200,
+            "y": -250,
+            "text": "Wie du vielleicht schon gemerkt hast, kannst du die grünen Platformen ohne Gefahr berühren und sogar darauf landen.\n\nDie neuen roten Platformen darfst du allerdings nicht berühren, da du das Level sonst von vorne beginnen musst."
         }
     ]
 }
