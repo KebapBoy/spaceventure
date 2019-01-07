@@ -1,4 +1,4 @@
-const levels = []
+let levels = []
 let currentLevel
 
 let player
@@ -20,8 +20,8 @@ function preload() {
  * Initialize the game.
  */
 function setup() {
-    // sort levels by id in ascending order
-    levels.sort((a, b) => a.id - b.id)
+    // delete invalid levels
+    levels = levels.filter(x => x)
 
     // the canvas should fill the browser viewport
     const renderer = createCanvas(windowWidth, windowHeight)
@@ -75,7 +75,8 @@ function loadGameData() {
         }
 
         // load level files
-        for (const file of levelFiles) {
+        for (let i = 0; i < levelFiles.length; i++) {
+            const file = levelFiles[i]
             const url = `${levelsFolder}/${file}`
 
             loadJSON(url, levelData => {
@@ -83,7 +84,7 @@ function loadGameData() {
                     const level = new Level(levelData)
 
                     if (level.valid) {
-                        levels.push(level)
+                        levels[i] = level
                         return
                     }
                 }
@@ -143,7 +144,7 @@ function resetLevel(resetTime) {
 function finishLevel() {
     const time = Date.now() - currentLevel.startTime
 
-    storeHighscore(currentLevel.id, time)
+    storeHighscore(currentLevel.name, time)
     currentLevel.finished = true
 
     push()
@@ -317,11 +318,8 @@ function update() {
     for (const _switch of currentLevel.switches) {
         const collisionSide = _switch.detectCollison(player)
 
-        if (collisionSide == "right") {
+        if (collisionSide == "bottom") {
             _switch.activate()
-        }
-        else if (collisionSide == "left") {
-            _switch.deactivate()
         }
     }
 
@@ -389,7 +387,7 @@ function showHud() {
     textSize(22)
 
     // level id
-    text(`LEVEL ${currentLevel.id}`, width - 25, 70)
+    text(`LEVEL ${levels.indexOf(currentLevel) + 1}`, width - 25, 70)
 
     textAlign(LEFT, TOP)
     text(formatTime(currentLevel.highscore) || "00:00:00", 26, 70)

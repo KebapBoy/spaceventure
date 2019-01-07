@@ -35,17 +35,23 @@ function checkControl(control) {
     }
 }
 
-function storeHighscore(levelId, highscore) {
-    let currentHighscore = getHighscore(levelId)
+function storeHighscore(levelName, highscore) {
+    levelName = normalizeLevelName(levelName)
+    let currentHighscore = getHighscore(levelName)
 
     if (!currentHighscore || highscore < currentHighscore) {
-        localStorage.setItem(`highscore-level-${levelId}`, highscore)
+        localStorage.setItem(`highscore-level-${levelName}`, highscore)
     }
 }
 
-function getHighscore(levelId) {
-    let highscore = localStorage.getItem(`highscore-level-${levelId}`)
+function getHighscore(levelName) {
+    levelName = normalizeLevelName(levelName)
+    let highscore = localStorage.getItem(`highscore-level-${levelName}`)
     return highscore ? parseInt(highscore) : null
+}
+
+function normalizeLevelName(levelName) {
+    return levelName.replace(/\s/g, "-")
 }
 
 function setOrGetDebug(debug) {

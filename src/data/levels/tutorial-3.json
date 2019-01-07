@@ -1,5 +1,5 @@
 {
-    "name": "Tutorial 1 - Einstieg",
+    "name": "Tutorial 3 - Schalter & Laser",
     "start": {
         "x": 0,
         "y": 0
@@ -9,6 +9,13 @@
         "y": -800
     },
     "platforms": [
+        {
+            "x": -1,
+            "y": -675,
+            "w": 202,
+            "h": 10,
+            "landable": true
+        },
         {
             "x": 400,
             "y": 150,
@@ -38,11 +45,29 @@
             "landable": true
         }
     ],
+    "switches": [
+        {
+            "x": 0,
+            "y": -689,
+            "connected": [
+                "laser-1"
+            ]
+        }
+    ],
+    "lasers": [
+        {
+            "x": 400,
+            "y": -400,
+            "length": 1000,
+            "socket": "bottom",
+            "name": "laser-1"
+        }
+    ],
     "hints": [
         {
-            "x": 100,
-            "y": -225,
-            "text": "Steuere das Raumschiff mit C und M oder indem du die linke bzw. rechte Bildschirmhälfte berührst.\n\nWie kannst du wohl nach oben fliegen?\n\nTipp: Versuche es mit beiden Tasten bzw. Bildschirmhälften gleichzeitig."
+            "x": 450,
+            "y": -200,
+            "text": "Dies ist ein Laser. Finde den zugehörigen Schalter, um den Laser zu deaktivieren.\n\nTipp: Wo führt denn die blaue Linie hin?"
         }
     ]
 }

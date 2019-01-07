@@ -3,7 +3,6 @@ class Level {
         this.valid = this._validateLevelFile(data)
         if (!this.valid) return
 
-        this.id = 0
         this.name = undefined
         this.start = undefined
         this.finish = undefined
@@ -35,7 +34,7 @@ class Level {
         this.finished = false
 
         if (resetTime) {
-            this.highscore = getHighscore(this.id)
+            this.highscore = getHighscore(this.name)
             this.startTime = Date.now()
         }
     }
@@ -63,14 +62,12 @@ class Level {
 
     _validateLevelFile(data) {
         return data && // file is empty
-            data.id != undefined && // no id
             data.name && // no name
             data.start && data.start.x != undefined && data.start.y != undefined && // no(t a valid) start point
             data.finish && data.finish.x != undefined && data.finish.y != undefined// no(t a valid) finish
     }
 
     _initialize(data) {
-        this.id = data.id
         this.name = data.name
         this.start = new Start(data.start.x, data.start.y)
         this.finish = new Finish(data.finish.x, data.finish.y)
@@ -102,6 +99,7 @@ class Level {
                     laserData.y,
                     laserData.length,
                     laserData.name,
+                    laserData.socket,
                 )
 
                 this.lasers.push(laser)
@@ -150,7 +148,7 @@ class Level {
             }
         }
 
-        this.highscore = getHighscore(this.id)
+        this.highscore = getHighscore(this.name)
         this.startTime = Date.now()
         this.initialized = true
     }

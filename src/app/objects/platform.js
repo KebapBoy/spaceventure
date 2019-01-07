@@ -9,10 +9,10 @@ class Platform extends Sprite {
         noStroke()
 
         if (this.landable) {
-            fill(0, 200, 0)
+            fill(70, 80, 80)
         }
         else {
-            fill(200, 0, 0)
+            fill(200, 70, 70)
         }
 
         rectMode(CENTER)

@@ -1,6 +1,6 @@
 class Switch extends Sprite {
     constructor(x, y) {
-        super(x, y, 30, 30)
+        super(x, y, 30, 20)
 
         this.active = false
 
@@ -11,7 +11,7 @@ class Switch extends Sprite {
         this.active = true
 
         for (const laser of this.connectedLaser) {
-            if (typeof laser.activate == "function") {
+            if (typeof laser.deactivate == "function") {
                 laser.deactivate()
             }
         }
@@ -46,7 +46,7 @@ class Switch extends Sprite {
                 stroke(0, 0, 255, 100)
             }
 
-            dashline(this.position.x, this.position.y + 15, laser.socketPosition.x, laser.socketPosition.y, 10, 10)
+            dashline(this.position.x, this.position.y + 10, laser.socketPosition.x, laser.socketPosition.y, 10, 20)
         }
 
         pop()
@@ -55,34 +55,29 @@ class Switch extends Sprite {
     }
 
     _draw() {
-        noStroke()
-        fill(255)
-
         rectMode(CENTER)
+        noStroke()
 
-        // socket
-        rect(0, 17, this.width, 6)
+        push()
 
-        translate(0, 15)
-
-        let rodAngle
-        let knobColor
+        let fillColor
 
         if (this.active) {
-            rodAngle = 25
-            knobColor = color(0, 255, 0)
+            translate(0, 3)
+            fillColor = color(0, 200, 0)
         }
         else {
-            rodAngle = -25
-            knobColor = color(255, 0, 0)
+            translate(0, -3)
+            fillColor = color(200, 0, 0)
         }
 
-        // rod
-        rotate(rodAngle)
-        rect(0, -this.height / 2 + 2, 4, this.height - 4)
+        fill(fillColor)
+        rect(0, 0, 26, 10)
 
-        // knob
-        fill(knobColor)
-        ellipse(0, -this.height + 7, 10)
+        pop()
+
+        // socket
+        fill(150)
+        rect(0, 6, this.width, 8)
     }
 }
