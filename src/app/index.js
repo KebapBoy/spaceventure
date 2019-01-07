@@ -150,7 +150,7 @@ function finishLevel() {
     push()
 
     // curtain
-    fill(0, 0, 0, 150)
+    fill(0, 0, 0, 200)
     rectMode(CORNER)
     rect(0, 0, width, height)
 
