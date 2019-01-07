@@ -17,6 +17,7 @@ class Level {
 
         this.highscore = undefined
         this.startTime = undefined
+        this.endTime = undefined
 
         this.initialized = false
         this._initialize(data)
@@ -34,8 +35,19 @@ class Level {
         this.finished = false
 
         if (resetTime) {
-            this.highscore = getHighscore(this.name)
             this.startTime = Date.now()
+            this.endTime = undefined
+        }
+    }
+
+    saveHighscore() {
+        if (!this.startTime || !this.endTime) return
+
+        const newHighscore = currentLevel.endTime - currentLevel.startTime
+
+        if (!this.highscore || newHighscore < this.highscore) {
+            storeHighscore(this.name, newHighscore)
+            this.highscore = newHighscore
         }
     }
 
@@ -150,6 +162,7 @@ class Level {
 
         this.highscore = getHighscore(this.name)
         this.startTime = Date.now()
+
         this.initialized = true
     }
 }

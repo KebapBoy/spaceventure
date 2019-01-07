@@ -13,6 +13,7 @@ class Spaceship extends Sprite {
 
         this.startPosition = undefined
         this.destroyed = false
+        this.controllable = true
     }
 
     destroy() {
@@ -23,6 +24,7 @@ class Spaceship extends Sprite {
 
         return new Promise(resolve => {
             this.destroyed = true
+            this.controllable = false
 
             // Resolve the promise after the destroy animation finished
             setTimeout(() => resolve(), 1500)
@@ -31,6 +33,7 @@ class Spaceship extends Sprite {
 
     reset() {
         this.destroyed = false
+        this.controllable = true
 
         this.leftThrust = false
         this.rightThrust = false
@@ -47,8 +50,8 @@ class Spaceship extends Sprite {
         this.leftThrust = checkControl("leftThrust")
         this.rightThrust = checkControl("rightThrust")
 
-        // Spacehsip can't be controlled anymore if destroyed
-        if (this.destroyed) {
+        // Spaceship can't be controlled anymore
+        if (!this.controllable) {
             this.leftThrust = false
             this.rightThrust = false
         }

@@ -142,41 +142,12 @@ function resetLevel(resetTime) {
  * before loading the next level.
  */
 function finishLevel() {
-    const time = Date.now() - currentLevel.startTime
-
-    storeHighscore(currentLevel.name, time)
+    currentLevel.endTime = Date.now()
     currentLevel.finished = true
-
-    push()
-
-    // curtain
-    fill(0, 0, 0, 200)
-    rectMode(CORNER)
-    rect(0, 0, width, height)
-
-    noStroke()
-    fill(255)
-
-    // text
-    push()
-    textSize(72)
-    textAlign(CENTER, BOTTOM)
-    textStyle(BOLD)
-    text("Level geschafft!", width / 2, height / 2 - 72)
-    pop()
-
-    // time
-    push()
-    textSize(32)
-    textAlign(CENTER, TOP)
-    let label = (!currentLevel.highscore || time < currentLevel.highscore) ? "Neue Bestzeit" : "Deine Zeit"
-    text(`${label}: ${formatTime(time)}`, width / 2, height / 2 + 32)
-    pop()
-
-    pop()
 
     // resume game after 3 seconds
     setTimeout(() => {
+        currentLevel.saveHighscore()
         initializeLevel()
     }, 3000)
 }
@@ -230,15 +201,16 @@ function draw() {
     // wait for level to load
     if (!currentLevel || !currentLevel.initialized) return
 
-    // wait for level end screen to finish
-    if (currentLevel.finished) return
-
     const redrawCanvas = update()
 
     if (redrawCanvas) {
         show()
 
         showHud()
+
+        if (currentLevel.finished) {
+            showLevelFinishScreen()
+        }
 
         if (DEBUG) {
             showDebugInfo()
@@ -278,7 +250,7 @@ function update() {
 
         if (!platform.landable) {
             // hit a not landable object
-            player.destroy().then(() => player.destroyed && resetLevel())
+            player.destroy().then(() => !currentLevel.finished && player.destroyed && resetLevel(true))
         }
 
         // bounce of landable object
@@ -327,7 +299,7 @@ function update() {
 
         if (collided) {
             // hit a laser
-            player.destroy().then(() => player.destroyed && resetLevel())
+            player.destroy().then(() => !currentLevel.finished && player.destroyed && resetLevel(true))
         }
     }
 
@@ -337,7 +309,7 @@ function update() {
     }
 
     // Check collision with finish only if player is not destroyed
-    if (!player.destroyed) {
+    if (!currentLevel.finished && !player.destroyed) {
         const finishReached = currentLevel.finish.detectCollison(player)
 
         if (finishReached) {
@@ -370,6 +342,37 @@ function show() {
     pop()
 }
 
+function showLevelFinishScreen() {
+    push()
+
+    // curtain
+    fill(0, 0, 0, 200)
+    rectMode(CORNER)
+    rect(0, 0, width, height)
+
+    noStroke()
+    fill(255)
+
+    // text
+    push()
+    textSize(72)
+    textAlign(CENTER, BOTTOM)
+    textStyle(BOLD)
+    text("Level geschafft!", width / 2, height / 2 - 72)
+    pop()
+
+    // time
+    push()
+    textSize(32)
+    textAlign(CENTER, TOP)
+    const time = currentLevel.endTime - currentLevel.startTime
+    const label = (!currentLevel.highscore || time < currentLevel.highscore) ? "Neue Bestzeit" : "Deine Zeit"
+    text(`${label}: ${formatTime(time)}`, width / 2, height / 2 + 32)
+    pop()
+
+    pop()
+}
+
 function showHud() {
     push()
 
@@ -379,7 +382,7 @@ function showHud() {
 
     // current time
     textAlign(LEFT, TOP)
-    text(formatTime(Date.now() - currentLevel.startTime), 25, 25)
+    text(formatTime((currentLevel.endTime || Date.now()) - currentLevel.startTime), 25, 25)
 
     // level name
     textAlign(RIGHT, TOP)
@@ -391,7 +394,7 @@ function showHud() {
     text(`LEVEL ${levels.indexOf(currentLevel) + 1}`, width - 25, 70)
 
     textAlign(LEFT, TOP)
-    text(formatTime(currentLevel.highscore) || "00:00:00", 26, 70)
+    text(formatTime(currentLevel.highscore || 0), 26, 70)
 
     pop()
 }

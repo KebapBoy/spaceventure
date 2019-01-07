@@ -37,11 +37,7 @@ function checkControl(control) {
 
 function storeHighscore(levelName, highscore) {
     levelName = normalizeLevelName(levelName)
-    let currentHighscore = getHighscore(levelName)
-
-    if (!currentHighscore || highscore < currentHighscore) {
-        localStorage.setItem(`highscore-level-${levelName}`, highscore)
-    }
+    localStorage.setItem(`highscore-level-${levelName}`, highscore)
 }
 
 function getHighscore(levelName) {
