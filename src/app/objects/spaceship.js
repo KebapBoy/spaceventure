@@ -119,5 +119,23 @@ class Spaceship extends Sprite {
         rotate(this.angle)
 
         triangle(0, -this.height / 2, -this.width / 2, this.height / 2, this.width / 2, this.height / 2)
+
+        // jets
+        noStroke()
+        fill(255, 60, 0, 175)
+
+        if (this.leftThrust) {
+            push()
+            rotate(-25)
+            ellipse(this.width / 2 - 11, this.height / 2 + 10, 6, 10)
+            pop()
+        }
+
+        if (this.rightThrust) {
+            push()
+            rotate(25)
+            ellipse(-this.width / 2 + 11, this.height / 2 + 10, 6, 10)
+            pop()
+        }
     }
 }
