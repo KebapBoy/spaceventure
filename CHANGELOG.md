@@ -2,6 +2,7 @@
 * New tutorial level
 * New styles for platforms and switches and also small style changes for start/finish and lasers
 * Added jets to spaceship
+* If the spaceship is getting destroyed there is an animation now
 
 # Spaceventure 0.9.2 (Jan 06, 2019)
 * Added new (tutorial) levels

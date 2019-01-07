@@ -278,8 +278,7 @@ function update() {
 
         if (!platform.landable) {
             // hit a not landable object
-            resetLevel()
-            return
+            player.destroy().then(() => player.destroyed && resetLevel())
         }
 
         // bounce of landable object
@@ -328,8 +327,7 @@ function update() {
 
         if (collided) {
             // hit a laser
-            resetLevel()
-            return
+            player.destroy().then(() => player.destroyed && resetLevel())
         }
     }
 
@@ -338,11 +336,14 @@ function update() {
         player.addForce(0.15, 90)
     }
 
-    const finishReached = currentLevel.finish.detectCollison(player)
+    // Check collision with finish only if player is not destroyed
+    if (!player.destroyed) {
+        const finishReached = currentLevel.finish.detectCollison(player)
 
-    if (finishReached) {
-        finishLevel()
-        return
+        if (finishReached) {
+            finishLevel()
+            return
+        }
     }
 
     return true

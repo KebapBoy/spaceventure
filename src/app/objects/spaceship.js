@@ -12,9 +12,26 @@ class Spaceship extends Sprite {
         this.angle = 0
 
         this.startPosition = undefined
+        this.destroyed = false
+    }
+
+    destroy() {
+        // If the spaceship is already destroyed do nothing (reject)
+        if (this.destroyed) {
+            return Promise.reject()
+        }
+
+        return new Promise(resolve => {
+            this.destroyed = true
+
+            // Resolve the promise after the destroy animation finished
+            setTimeout(() => resolve(), 1500)
+        })
     }
 
     reset() {
+        this.destroyed = false
+
         this.leftThrust = false
         this.rightThrust = false
 
@@ -29,6 +46,12 @@ class Spaceship extends Sprite {
     update() {
         this.leftThrust = checkControl("leftThrust")
         this.rightThrust = checkControl("rightThrust")
+
+        // Spacehsip can't be controlled anymore if destroyed
+        if (this.destroyed) {
+            this.leftThrust = false
+            this.rightThrust = false
+        }
 
         // both thrusts, upwards motion
         if (this.leftThrust && this.rightThrust) {
@@ -113,8 +136,15 @@ class Spaceship extends Sprite {
 
     _draw() {
         strokeWeight(2)
-        stroke(255)
-        fill(255, 255, 255, 175)
+
+        if (this.destroyed) {
+            stroke(255, 75, 75, 150)
+            fill(255, 100, 100, 100)
+        }
+        else {
+            stroke(255)
+            fill(255, 255, 255, 175)
+        }
 
         rotate(this.angle)
 
