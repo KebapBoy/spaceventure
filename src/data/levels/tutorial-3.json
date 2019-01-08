@@ -56,7 +56,7 @@
     ],
     "lasers": [
         {
-            "x": 400,
+            "x": 600,
             "y": -400,
             "length": 1000,
             "socket": "bottom",
@@ -65,8 +65,8 @@
     ],
     "hints": [
         {
-            "x": 450,
-            "y": -200,
+            "x": -30,
+            "y": -250,
             "text": "Dies ist ein Laser. Finde den zugehörigen Schalter, um den Laser zu deaktivieren.\n\nTipp: Wo führt denn die blaue Linie hin?"
         }
     ]
