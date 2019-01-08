@@ -1,15 +1,15 @@
-// Ported from Processing. Thanks to J David Eisenberg (https://www.openprocessing.org/sketch/7013/).
-//
-// Small edits made to improve performance and to cut of the line on ending point.
-
-/*
+/**
  * Draw a dashed line with given dash and gap length.
- * x0 starting x-coordinate of line.
- * y0 starting y-coordinate of line.
- * x1 ending x-coordinate of line.
- * y1 ending y-coordinate of line.
- * dash - length of dashed line in pixels
- * gap - space between dashes in pixels
+ *
+ * @param {number} x0 starting x-coordinate of line
+ * @param {number} y0 starting y-coordinate of line
+ * @param {number} x1 ending x-coordinate of line
+ * @param {number} y1 ending y-coordinate of line
+ * @param {number} dash length of dashed line in pixels
+ * @param {number} gap space between dashes in pixels
+ *
+ * Ported from Processing. Thanks to J David Eisenberg (https://www.openprocessing.org/sketch/7013/).
+ * Small edits made to improve performance and to cut of the line on ending point.
  */
 function dashline(x0, y0, x1, y1, dash, gap) {
     const distance = dist(x0, y0, x1, y1)
@@ -59,5 +59,42 @@ function dashline(x0, y0, x1, y1, dash, gap) {
 
         // alternate between dash and gap
         drawDash = !drawDash
+    }
+}
+
+/**
+ * Draw a rectangle filled with a gradient of given colors.
+ *
+ * @param {number} x starting x-coordinate of gradient rect
+ * @param {number} y starting x-coordinate of gradient rect
+ * @param {number} w width of gradient rect
+ * @param {number} h height of gradient rect
+ * @param {number} c1 gradient starting color
+ * @param {number} c2 gradient ending color
+ * @param {string} axis direction of gradient, either "y" or "x"
+ *
+ * Thanks to P5 Examples (https://p5js.org/examples/color-linear-gradient.html).
+ * Small edits made.
+ */
+function gradientRect(x, y, w, h, c1, c2, axis) {
+    noFill()
+
+    if (axis == "y") {
+        // Top to bottom gradient
+        for (let i = y; i <= y + h; i++) {
+            let inter = map(i, y, y + h, 0, 1)
+            let c = lerpColor(c1, c2, inter)
+            stroke(c)
+            line(x, i, x + w, i)
+        }
+    }
+    else if (axis == "x") {
+        // Left to right gradient
+        for (let i = x; i <= x + w; i++) {
+            let inter = map(i, x, x + w, 0, 1)
+            let c = lerpColor(c1, c2, inter)
+            stroke(c)
+            line(i, y, i, y + h)
+        }
     }
 }
