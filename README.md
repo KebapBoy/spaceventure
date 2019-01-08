@@ -6,9 +6,9 @@ A small arcade-style skill game were the player has to navigate a spaceship thro
 
 To play the game simply open the _src/index.html_ file.
 
-**Browser zoom should be disabled, set to 100%.**
+**Browser zoom should be disabled / set to 100%.**
 
-Activate switches to disabled lasers and reach the finish (white framed area).
+Activate switches to disabled lasers and reach the finish. But be careful and don't touch the red walls!
 
 ### Controls
 
