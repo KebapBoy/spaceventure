@@ -87,11 +87,23 @@ class Spaceship extends Sprite {
         }
         // hovering
         else {
-            if (this.angle > 0) {
-                this.angle -= 2
+            // If spaceship is not destroyed rotate back to normal ...
+            if (!this.destroyed) {
+                if (this.angle > 0) {
+                    this.angle -= 2
+                }
+                else if (this.angle < 0) {
+                    this.angle += 2
+                }
             }
-            else if (this.angle < 0) {
-                this.angle += 2
+            // .. else if the spaceship is stil moving, rotate it by the current angle direction
+            else if (this.velocity.magSq() > 2) {
+                if (this.angle > 0) {
+                    this.angle += 1
+                }
+                else if (this.angle < 0) {
+                    this.angle -= 1
+                }
             }
 
             // if the velocity (x or y) is really small set it to zero

@@ -1,6 +1,6 @@
 # Spaceventure 0.9.4 (Jan 08, 2019)
 * Added new level
-* Small style improvements for switches and lasers
+* Small style improvements for switches and lasers and spaceship when destroyed
 * Conenction between a switch and a laser now has an animation when active
 
 # Spaceventure 0.9.3 (Jan 07, 2019)
