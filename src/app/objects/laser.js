@@ -1,16 +1,16 @@
 class Laser extends Sprite {
     constructor(x, y, length, name, socket) {
-        super(x, y, 5, length)
+        super(x, y, 9, length)
 
         this.name = name
         this.active = true
         this.socket = socket
 
         if (this.socket == "bottom") {
-            this.socketPosition = this.position.copy().sub(0, -this.height / 2 + 5)
+            this.socketPosition = this.position.copy().sub(0, -this.height / 2 + 8)
         }
         else {
-            this.socketPosition = this.position.copy().sub(0, this.height / 2 - 5)
+            this.socketPosition = this.position.copy().sub(0, this.height / 2 - 8)
         }
     }
 
@@ -31,7 +31,7 @@ class Laser extends Sprite {
         if (this.active) {
             // draw laser beam
             fill(255, 75, 50, 200)
-            rect(0, 0, 8, this.height)
+            rect(0, 0, 9, this.height)
         }
 
         if (this.socket == "bottom") {

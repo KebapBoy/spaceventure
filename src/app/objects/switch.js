@@ -46,7 +46,7 @@ class Switch extends Sprite {
                 stroke(0, 0, 255, 100)
             }
 
-            dashline(this.position.x, this.position.y + 10, laser.socketPosition.x, laser.socketPosition.y, 10, 20)
+            dashline(this.position.x, this.position.y + 5, laser.socketPosition.x, laser.socketPosition.y, 10, 20)
         }
 
         pop()
