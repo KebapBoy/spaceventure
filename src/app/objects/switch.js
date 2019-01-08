@@ -5,10 +5,17 @@ class Switch extends Sprite {
         this.active = false
 
         this.connectedLaser = []
+
+        // Used for animating the switch/laser connection line
+        this.startFrameCount = undefined
     }
 
     activate() {
+        // If already activated do nothing
+        if (this.active) return
+
         this.active = true
+        this.startFrameCount = frameCount
 
         for (const laser of this.connectedLaser) {
             if (typeof laser.deactivate == "function") {
@@ -18,6 +25,9 @@ class Switch extends Sprite {
     }
 
     deactivate() {
+        // If already deactivated do nothing
+        if (!this.active) return
+
         this.active = false
 
         for (const laser of this.connectedLaser) {
@@ -39,14 +49,22 @@ class Switch extends Sprite {
         for (const laser of this.connectedLaser) {
             // draw connection line to laser
 
+            const dashLength = 5
+            const gapLength = 10
+
             if (this.active) {
+                // Animate the connection line by shifting its start position
+                const vector = createVector(laser.socketPosition.x - this.position.x, laser.socketPosition.y - this.position.y)
+                vector.setMag((frameCount - this.startFrameCount) % (dashLength + gapLength))
+                translate(vector)
+
                 stroke(0, 0, 255, 200)
             }
             else {
                 stroke(0, 0, 255, 100)
             }
 
-            dashline(this.position.x, this.position.y + 5, laser.socketPosition.x, laser.socketPosition.y, 10, 20)
+            dashline(this.position.x, this.position.y + 5, laser.socketPosition.x, laser.socketPosition.y, dashLength, gapLength)
         }
 
         pop()

@@ -35,7 +35,7 @@ class Laser extends Sprite {
             fill(255, 125, 125)
         }
         else {
-            fill(255, 50)
+            fill(100)
         }
 
         if (this.socket == "bottom") {
