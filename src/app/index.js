@@ -133,6 +133,12 @@ function resetLevel(resetTime) {
     // reset player
     player.reset()
 
+    // If reset was pressed while the level is finished
+    // save the highscore before resetting the level
+    if (currentLevel.finished) {
+        currentLevel.saveHighscore()
+    }
+
     // reset level
     currentLevel.reset(resetTime)
 }
@@ -148,7 +154,12 @@ function finishLevel() {
     // resume game after 3 seconds
     setTimeout(() => {
         currentLevel.saveHighscore()
-        initializeLevel()
+
+        // Only initialize the next level if the current is still finished
+        // meaning the player has not reset the current level
+        if (currentLevel.finished) {
+            initializeLevel()
+        }
     }, 3000)
 }
 
