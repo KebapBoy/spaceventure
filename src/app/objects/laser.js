@@ -30,7 +30,10 @@ class Laser extends Sprite {
 
         if (this.active) {
             // draw laser beam
-            gradientRect(-this.width / 2, -this.height / 2, 9, this.height, color(255, 75, 50, 40), color(255, 75, 50, 225), "y")
+            fill(255, 75, 50, 200)
+            rect(0, 0, 9, this.height)
+            // Removed due to performance problems
+            // gradientRect(-this.width / 2, -this.height / 2, 9, this.height, color(255, 75, 50, 40), color(255, 75, 50, 225), "y")
 
             fill(255, 125, 125)
         }
