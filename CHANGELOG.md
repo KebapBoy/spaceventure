@@ -1,3 +1,6 @@
+# Spaceventure 0.9.4 (Jan 08, 2019)
+* Added new level
+
 # Spaceventure 0.9.3 (Jan 07, 2019)
 * New tutorial level
 * New styles for platforms and switches and also small style changes for start/finish and lasers

@@ -1,0 +1,108 @@
+{
+    "name": "Laserjet",
+    "start": {
+        "x": 300,
+        "y": -700
+    },
+    "finish": {
+        "x": 800,
+        "y": -800
+    },
+    "platforms": [
+        {
+            "x": -51,
+            "y": -775,
+            "w": 100,
+            "h": 10,
+            "landable": true
+        },
+        {
+            "x": 100,
+            "y": -599,
+            "w": 10,
+            "h": 652,
+            "landable": true
+        },
+        {
+            "x": 300,
+            "y": -401,
+            "w": 10,
+            "h": 602,
+            "landable": true
+        },
+        {
+            "x": 320,
+            "y": -105,
+            "w": 850,
+            "h": 10,
+            "landable": true
+        },
+        {
+            "x": 676,
+            "y": -300,
+            "w": 452,
+            "h": 10,
+            "landable": true
+        },
+        {
+            "x": 520,
+            "y": -505,
+            "w": 450,
+            "h": 10,
+            "landable": true
+        },
+        {
+            "x": 676,
+            "y": -700,
+            "w": 452,
+            "h": 10,
+            "landable": true
+        },
+        {
+            "x": 400,
+            "y": 150,
+            "w": 1200,
+            "h": 100,
+            "landable": true
+        },
+        {
+            "x": -150,
+            "y": -400,
+            "w": 100,
+            "h": 1200,
+            "landable": true
+        },
+        {
+            "x": 400,
+            "y": -950,
+            "w": 1200,
+            "h": 100,
+            "landable": true
+        },
+        {
+            "x": 950,
+            "y": -400,
+            "w": 100,
+            "h": 1200,
+            "landable": true
+        }
+    ],
+    "switches": [
+        {
+            "x": -50,
+            "y": -789,
+            "connected": [
+                "laser-1"
+            ]
+        }
+    ],
+    "lasers": [
+        {
+            "x": 600,
+            "y": -803,
+            "length": 195,
+            "socket": "bottom",
+            "name": "laser-1"
+        }
+    ]
+}
