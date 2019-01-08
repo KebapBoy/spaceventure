@@ -1,8 +1,8 @@
 {
     "name": "Laserjet",
     "start": {
-        "x": 300,
-        "y": -700
+        "x": 0,
+        "y": 0
     },
     "finish": {
         "x": 800,
