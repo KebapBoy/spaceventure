@@ -32,6 +32,10 @@ class Laser extends Sprite {
             // draw laser beam
             fill(255, 75, 50, 200)
             rect(0, 0, 9, this.height)
+            fill(255, 125, 125)
+        }
+        else {
+            fill(255, 50)
         }
 
         if (this.socket == "bottom") {
@@ -41,7 +45,6 @@ class Laser extends Sprite {
         // draw socket
         strokeWeight(2)
         stroke(150)
-        fill(255)
         rect(0, -this.height / 2 + 8, 20, 16)
     }
 }

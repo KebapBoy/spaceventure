@@ -1,6 +1,6 @@
 class Switch extends Sprite {
     constructor(x, y) {
-        super(x, y, 30, 20)
+        super(x, y, 30, 16)
 
         this.active = false
 
@@ -56,28 +56,27 @@ class Switch extends Sprite {
 
     _draw() {
         rectMode(CENTER)
-        noStroke()
+        strokeWeight(2)
 
         push()
-
-        let fillColor
-
         if (this.active) {
-            translate(0, 3)
-            fillColor = color(0, 200, 0)
+            translate(0, 1)
+            fill(0, 200, 0)
+            stroke(0, 255, 0)
         }
         else {
-            translate(0, -3)
-            fillColor = color(200, 0, 0)
+            translate(0, -5)
+            fill(200, 0, 0)
+            stroke(255, 0, 0)
         }
 
-        fill(fillColor)
+        // button
         rect(0, 0, 26, 10)
-
         pop()
 
         // socket
+        stroke(100)
         fill(150)
-        rect(0, 6, this.width, 8)
+        rect(0, 4, this.width, 8)
     }
 }
