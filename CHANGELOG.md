@@ -1,18 +1,18 @@
-# Spaceventure 0.9.5 (Jan 08, 2019)
+# Spaceventure 0.12.1 (Jan 08, 2019)
 * More natural camera movement
 
-# Spaceventure 0.9.4 (Jan 08, 2019)
+# Spaceventure 0.12.0 (Jan 08, 2019)
 * Added new level
 * Small style improvements for switches and lasers and spaceship when destroyed
-* Conenction between a switch and a laser now has an animation when active
+* Connection between a switch and a laser now has an animation when active
 
-# Spaceventure 0.9.3 (Jan 07, 2019)
+# Spaceventure 0.11.0 (Jan 07, 2019)
 * New tutorial level
 * New styles for platforms and switches and also small style changes for start/finish and lasers
 * Added jets to spaceship
 * If the spaceship is getting destroyed there is an animation now
 
-# Spaceventure 0.9.2 (Jan 06, 2019)
+# Spaceventure 0.10.0 (Jan 06, 2019)
 * Added new (tutorial) levels
 * Some hints will be shown to help the player learn new game mechanics
 * Improved graphics
