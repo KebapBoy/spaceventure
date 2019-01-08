@@ -33,10 +33,13 @@ function dashline(x0, y0, x1, y1, dash, gap) {
 
     while (drawn < distance) {
         if (drawDash) {
-            // Add dash spacing to current x and y coordinate
-            // but only up to x1 and y1 to prevent an overlapping dash
-            let _x0 = min(x0 + dashSpacing.x, x1)
-            let _y0 = min(y0 + dashSpacing.y, y1)
+            // Add dash spacing to current x and y coordinate ...
+            let _x0 = x0 + dashSpacing.x
+            let _y0 = y0 + dashSpacing.y
+
+            // ... but only up to x1 and y1 to prevent an overlapping dash
+            if (_x0 > abs(x1)) _x0 = x1
+            if (_y0 > abs(y1)) _y0 = y1
 
             line(x0, y0, _x0, _y0)
 
