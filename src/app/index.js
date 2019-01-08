@@ -7,6 +7,8 @@ let error
 
 let appFont
 
+const cameraOffset = { x: 0, y: 0 }
+
 /**
  * Called by p5 at before game start (before setup).
  * Load game data.
@@ -341,8 +343,14 @@ function show() {
 
     push()
 
-    // translate to player position to show the spaceship in the middle of the screen
+    // translate to player position and middle of canvas to show the spaceship always in the middle of the screen
     translate(-player.position.x + width / 2, -player.position.y + height / 2)
+
+
+    // offset the player position a little according to the current velocity to make the camera movement smoother and more natural
+    cameraOffset.x = lerp(cameraOffset.x, map(player.velocity.x, -10, 10, -150, 150, true), 0.1)
+    cameraOffset.y = lerp(cameraOffset.y, map(player.velocity.y, -10, 10, -100, 100, true), 0.1)
+    translate(cameraOffset.x, cameraOffset.y)
 
     // show all objects of the current level
     currentLevel.show()
@@ -351,6 +359,15 @@ function show() {
     player.show()
 
     pop()
+
+    if (DEBUG) {
+        // draw canvas center point
+        push()
+        strokeWeight(5)
+        stroke(0, 255, 0)
+        point(width / 2, height / 2)
+        pop()
+    }
 }
 
 function showLevelFinishScreen() {

@@ -1,3 +1,6 @@
+# Spaceventure 0.9.5 (Jan 08, 2019)
+* More natural camera movement
+
 # Spaceventure 0.9.4 (Jan 08, 2019)
 * Added new level
 * Small style improvements for switches and lasers and spaceship when destroyed
