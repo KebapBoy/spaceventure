@@ -1,3 +1,9 @@
+# Spaceventure 1.0.0 (Jan 19, 2019)
+* The first full release is out! (There is still plenty room for performance optimization)
+* Game scaling is now correct regardless of the device screen size
+* Added landscape mode hint on mobile
+* Improved debug modes
+
 # Spaceventure 0.12.1 (Jan 08, 2019)
 * More natural camera movement
 

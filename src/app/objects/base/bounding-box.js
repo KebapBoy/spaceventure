@@ -52,7 +52,7 @@ class BoundingBox {
     }
 
     show() {
-        if (this.collisionEnabled && DEBUG) {
+        if (this.collisionEnabled && isFullDebug()) {
             push()
 
             // draw bounding box

@@ -35,7 +35,7 @@ class Sprite extends BoundingBox {
 
         super.show()
 
-        if (DEBUG) {
+        if (isFullDebug()) {
             push()
 
             // draw center point (position)

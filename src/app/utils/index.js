@@ -50,14 +50,28 @@ function normalizeLevelName(levelName) {
     return levelName.replace(/\s/g, "-")
 }
 
-function setOrGetDebug(debug) {
-    if (debug == undefined) {
-        // initialize variable with stored or fallback
-        debug = localStorage.getItem("debug") === "true"
+function toggleDebug() {
+    if (!DEBUG) {
+        DEBUG = "info"
+    }
+    else if (DEBUG == "info") {
+        DEBUG = "full"
     }
     else {
-        localStorage.setItem("debug", debug)
+        DEBUG = ""
     }
 
-    return debug
+    localStorage.setItem("DEBUG", DEBUG)
+}
+
+function loadDebug() {
+    DEBUG = localStorage.getItem("DEBUG")
+}
+
+function isInfoDebug() {
+    return DEBUG == "info" || isFullDebug()
+}
+
+function isFullDebug() {
+    return DEBUG == "full"
 }

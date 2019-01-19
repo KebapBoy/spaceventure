@@ -1,13 +1,14 @@
-let levels = []
-let currentLevel
-
-let player
+let gameFont
+let gameScale
+let scaledWidth
+let scaledHeight
+const cameraOffset = { x: 0, y: 0 }
 
 let error
 
-let appFont
-
-const cameraOffset = { x: 0, y: 0 }
+let levels = []
+let currentLevel
+let player
 
 /**
  * Called by p5 at before game start (before setup).
@@ -22,11 +23,13 @@ function preload() {
  * Initialize the game.
  */
 function setup() {
-    // delete invalid levels
+    // remove invalid levels
     levels = levels.filter(x => x)
 
     // the canvas should fill the browser viewport
     const renderer = createCanvas(windowWidth, windowHeight)
+
+    calculateGameScale()
 
     // always work with degree angles
     angleMode(DEGREES)
@@ -34,24 +37,29 @@ function setup() {
     // hide mouse cursor
     noCursor()
 
-    textFont(appFont)
+    // set game font as default
+    textFont(gameFont)
 
     // prevent contextmenu on mouse right click
     renderer.canvas.addEventListener("contextmenu", e => e.preventDefault())
 
     // resize canvas on browser resize
-    window.addEventListener("resize", () => resizeCanvas(windowWidth, windowHeight))
+    window.addEventListener("resize", () => {
+        resizeCanvas(windowWidth, windowHeight)
+        calculateGameScale() // game scale depends on screen size, therefore recalculate it
+    })
 
     // initialize DEBUG variable
-    DEBUG = setOrGetDebug()
+    loadDebug()
 
     // toggle DEBUG
     document.addEventListener("keypress", e => {
         if (e.keyCode == KEYS.D && e.shiftKey) {
-            DEBUG = setOrGetDebug(!DEBUG)
+            toggleDebug()
         }
     })
 
+    // create player and set its physics values
     player = new Spaceship()
     player.friction = 0.01
     player.flexibility = 0.5
@@ -59,12 +67,41 @@ function setup() {
     initializeLevel()
 }
 
+// added device shake as debug toggle on mobile
+let shakeTimeoutId
+function deviceShaken() {
+    // use timeout to only call toggleDebug once
+    // the deviceShaken function is called multiple times for one shake
+    clearTimeout(shakeTimeoutId)
+    shakeTimeoutId = setTimeout(() => toggleDebug(), 100)
+}
+
+/**
+ * Calculates the scale needed to display the game always the same scale
+ * regardless the device screen dimension.
+ */
+function calculateGameScale() {
+    // original game scale was fitted for an 1920x1080px display
+    const referenceScreenWidth = 1920
+
+    gameScale = 1 / (referenceScreenWidth / windowWidth)
+
+    // on mobile the game scales to small, so increase it a little bit
+    if (gameScale < 0.5) {
+        gameScale *= 1.5
+    }
+
+    // set scaled width and height to use them for object positioning
+    scaledWidth = width / gameScale
+    scaledHeight = height / gameScale
+}
+
 function loadGameData() {
     let dataFolder = "./data"
     let levelsFolder = `${dataFolder}/levels`
 
     // load font
-    appFont = loadFont('./fonts/abel.ttf')
+    gameFont = loadFont('./fonts/abel.ttf')
 
     // load levels
     loadJSON(`${levelsFolder}/levels.json`, levelFiles => {
@@ -175,7 +212,7 @@ function finishGame() {
     // curtain
     fill(0)
     rectMode(CORNER)
-    rect(0, 0, width, height)
+    rect(0, 0, scaledWidth, scaledHeight)
 
     noStroke()
     fill(255)
@@ -185,14 +222,14 @@ function finishGame() {
     textSize(72)
     textAlign(CENTER, BOTTOM)
     textStyle(BOLD)
-    text("Herzlichen Glückwunsch!", width / 2, height / 2 - 72)
+    text("Herzlichen Glückwunsch!", scaledWidth / 2, scaledHeight / 2 - 72)
     pop()
 
     // message
     push()
     textSize(32)
     textAlign(CENTER, TOP)
-    text("Du hast erfolgreich alle Level von Spaceventure absolviert. Das Spiel startet nun von vorne.\nVersuche doch deine bisherigen Bestzeiten zu knacken.", 50, height / 2 + 32, width - 100)
+    text("Du hast erfolgreich alle Level von Spaceventure absolviert. Das Spiel startet nun von vorne.\nVersuche doch deine bisherigen Bestzeiten zu knacken.", 50, scaledHeight / 2 + 32, scaledWidth - 100)
     pop()
 
     // resume game after 3 seconds
@@ -214,9 +251,18 @@ function draw() {
     // wait for level to load
     if (!currentLevel || !currentLevel.initialized) return
 
+    // if the device is in portrait mode show an hint to turn it to landscape
+    if (deviceOrientation == PORTRAIT) {
+        showLandscapeHint()
+        return
+    }
+
     const redrawCanvas = update()
 
     if (redrawCanvas) {
+        // scale app acording to calculated scale
+        scale(gameScale)
+
         show()
 
         showHud()
@@ -225,7 +271,7 @@ function draw() {
             showLevelFinishScreen()
         }
 
-        if (DEBUG) {
+        if (isInfoDebug()) {
             showDebugInfo()
         }
     }
@@ -344,7 +390,7 @@ function show() {
     push()
 
     // translate to player position and middle of canvas to show the spaceship always in the middle of the screen
-    translate(-player.position.x + width / 2, -player.position.y + height / 2)
+    translate(-player.position.x + scaledWidth / 2, -player.position.y + scaledHeight / 2)
 
     // offset the player position a little according to the current velocity to make the camera movement smoother and more natural
     cameraOffset.x = lerp(cameraOffset.x, map(player.velocity.x, -10, 10, -150, 150, true), 0.1)
@@ -359,14 +405,31 @@ function show() {
 
     pop()
 
-    if (DEBUG) {
+    if (isFullDebug()) {
         // draw canvas center point
         push()
         strokeWeight(5)
         stroke(0, 255, 0)
-        point(width / 2, height / 2)
+        point(scaledWidth / 2, scaledHeight / 2)
         pop()
     }
+}
+
+function showLandscapeHint() {
+    push()
+
+    scale(gameScale)
+
+    background(0)
+
+    noStroke()
+    fill(255)
+
+    textSize(100)
+    textAlign(CENTER, CENTER)
+    text("Bitte drehe dein Smartphone in Landscape Position, um das Spiel zu spielen.", 50, scaledHeight / 2 - 250, scaledWidth - 100)
+
+    pop()
 }
 
 function showLevelFinishScreen() {
@@ -375,7 +438,7 @@ function showLevelFinishScreen() {
     // curtain
     fill(0, 0, 0, 200)
     rectMode(CORNER)
-    rect(0, 0, width, height)
+    rect(0, 0, scaledWidth, scaledHeight)
 
     noStroke()
     fill(255)
@@ -385,16 +448,16 @@ function showLevelFinishScreen() {
     textSize(72)
     textAlign(CENTER, BOTTOM)
     textStyle(BOLD)
-    text("Level geschafft!", width / 2, height / 2 - 72)
+    text("Level geschafft!", scaledWidth / 2, scaledHeight / 2 - 72)
     pop()
 
     // time
     push()
     textSize(32)
     textAlign(CENTER, TOP)
-    const time = currentLevel.endTime - currentLevel.startTime
+    const time = (currentLevel.endTime - currentLevel.startTime) || 0
     const label = (!currentLevel.highscore || time < currentLevel.highscore) ? "Neue Bestzeit" : "Deine Zeit"
-    text(`${label}: ${formatTime(time)}`, width / 2, height / 2 + 32)
+    text(`${label}: ${formatTime(time)}`, scaledWidth / 2, scaledHeight / 2 + 32)
     pop()
 
     pop()
@@ -413,12 +476,12 @@ function showHud() {
 
     // level name
     textAlign(RIGHT, TOP)
-    text(currentLevel.name.toUpperCase(), width - 25, 25)
+    text(currentLevel.name.toUpperCase(), scaledWidth - 25, 25)
 
     textSize(22)
 
     // level id
-    text(`LEVEL ${levels.indexOf(currentLevel) + 1}`, width - 25, 70)
+    text(`LEVEL ${levels.indexOf(currentLevel) + 1}`, scaledWidth - 25, 70)
 
     textAlign(LEFT, TOP)
     text(formatTime(currentLevel.highscore || 0), 26, 70)
@@ -435,13 +498,13 @@ function showDebugInfo() {
 
     push()
 
-    translate(width - 200, height - 125)
+    translate(scaledWidth - 200, scaledHeight - 175)
 
     // frame
     push()
     stroke(255, 0, 0)
     noFill()
-    rect(0, 0, 175, 100)
+    rect(0, 0, 175, 150)
     pop()
 
     // title
@@ -449,7 +512,7 @@ function showDebugInfo() {
     noStroke()
     fill(255, 0, 0)
     textStyle(BOLD)
-    text("DEBUG Information", 5, 17)
+    text("DEBUG Information", 7, 17)
     pop()
 
     // fps
@@ -461,16 +524,29 @@ function showDebugInfo() {
     text(fps, 150, 20)
     pop()
 
+    // display/scale information
+    push()
+    translate(7, 40)
+    noStroke()
+    fill(255)
+    // sizes
+    text(`Screen:  ${displayWidth}x${displayHeight}`, 0, 0)
+    text(`Window:  ${windowWidth}x${windowHeight}`, 0, 15)
+    // scale
+    text(`Scale:  ${gameScale}`, 0, 30)
+    pop()
+
     // player information
     push()
+    translate(7, 90)
     noStroke()
     fill(255)
     // position
-    text("x-Position:  " + formatNumber(player.position.x, 2), 7, 35)
-    text("y-Position:  " + formatNumber(player.position.y, 2), 7, 50)
+    text("x-Position:  " + formatNumber(player.position.x, 2), 0, 0)
+    text("y-Position:  " + formatNumber(player.position.y, 2), 0, 15)
     // velocity
-    text("x-Velocity:  " + formatNumber(player.velocity.x, 2), 7, 65)
-    text("y-Velocity:  " + formatNumber(player.velocity.y, 2), 7, 80)
+    text("x-Velocity:  " + formatNumber(player.velocity.x, 2), 0, 30)
+    text("y-Velocity:  " + formatNumber(player.velocity.y, 2), 0, 45)
     pop()
 
     pop()
@@ -482,7 +558,7 @@ function showError() {
     // curtain
     fill(0, 0, 0, 150)
     rectMode(CORNER)
-    rect(0, 0, width, height)
+    rect(0, 0, scaledWidth, scaledHeight)
 
     // headline
     noStroke()
@@ -490,7 +566,7 @@ function showError() {
     textSize(56)
     textAlign(CENTER, BOTTOM)
     textStyle(BOLD)
-    text("Fehler", 50, height / 2 - 192, width - 100)
+    text("Fehler", 50, scaledHeight / 2 - 192, scaledWidth - 100)
 
     // title
     noStroke()
@@ -498,7 +574,7 @@ function showError() {
     textSize(48)
     textAlign(CENTER, BOTTOM)
     textStyle(BOLD)
-    text(error.title, 50, height / 2 - 96, width - 100)
+    text(error.title, 50, scaledHeight / 2 - 96, scaledWidth - 100)
 
     // message
     noStroke()
@@ -506,7 +582,7 @@ function showError() {
     textSize(32)
     textAlign(CENTER, TOP)
     textStyle(NORMAL)
-    text(error.message, 50, height / 2 + 32, width - 100)
+    text(error.message, 50, scaledHeight / 2 + 32, scaledWidth - 100)
 
     pop()
 }

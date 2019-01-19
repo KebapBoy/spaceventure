@@ -120,7 +120,7 @@ class Spaceship extends Sprite {
 
         super.update()
 
-        if (DEBUG) {
+        if (isFullDebug()) {
             // update path only every fith frame ...
             if (frameCount % 5 == 0) {
                 const lastPoint = path[path.length - 1]
@@ -134,7 +134,7 @@ class Spaceship extends Sprite {
     }
 
     show() {
-        if (DEBUG) {
+        if (isFullDebug()) {
             push()
 
             stroke(255, 0, 0)
