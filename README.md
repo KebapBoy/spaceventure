@@ -6,8 +6,6 @@ A small arcade-style skill game were the player has to navigate a spaceship thro
 
 To play the game simply open the _src/index.html_ file.
 
-**Browser zoom should be disabled / set to 100%.**
-
 Activate switches to disabled lasers and reach the finish. But be careful and don't touch the red walls!
 
 ### Controls
@@ -19,6 +17,10 @@ Activate switches to disabled lasers and reach the finish. But be careful and do
 | Move up (both thrusts)   | C + M | Both sides   |
 | Restart level            | R     | -            |
 
+
+### Having performance problems?
+
+You can use the browser zoom (zoom in) to increase the performance of the game.
 
 ## How to develop?
 
